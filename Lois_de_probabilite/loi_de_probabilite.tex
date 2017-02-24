@@ -1,0 +1,145 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{amssymb,amsmath}
+\allowdisplaybreaks
+\usepackage{mathrsfs}
+\usepackage{color}
+\usepackage{graphicx}
+
+\usepackage[left=1cm,top=2cm,right=1cm,bottom=2cm,bindingoffset=0cm]{geometry}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0.5pt}
+\fancyhead[R]{}
+\fancyhead[L]{}
+\fancyfoot[R]{Lois de probabilité}
+\fancyfoot[L]{{\tiny v:15.11.02}}
+
+\setlength\parindent{0em}
+
+\usepackage{fancybox}
+\usepackage{cadre}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{theo}{Théorème}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{prop}{Proposition}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{coro}{Corollaire}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{lemme}{Lemme}{compteur_theo}
+
+\newboxedtheorem[boxcolor= blue!20!black!30!green, background=white, titlebackground=white,
+titleboxcolor = blue!20!black!30!green]{defin}{Définition}{compteur_dfn}
+
+\newboxedtheorem[boxcolor= black, background=white, titlebackground=white,
+titleboxcolor = black]{att}{ATTENTION}{}
+
+\newboxedtheorem[boxcolor= blue, background=white, titlebackground=white,
+titleboxcolor = blue]{astu}{Astuce}{}
+
+\newboxedtheorem[boxcolor= black!30, background=white, titlebackground=white,
+titleboxcolor = black!30]{exe}{Exemple}{compteur_exe}
+
+\newboxedtheorem[boxcolor=brown, background=white, titlebackground=white,
+titleboxcolor = brown]{expli}{Explication}{compteur_expli}
+
+\newboxedtheorem[boxcolor=blue!50!red, background=white, titlebackground=white,
+titleboxcolor = blue!50!red]{rappel}{Rappel}{compteur_rap}
+
+\usepackage{bbm} % indicatrice \mathbbm{1}
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+\begin{document}
+\begin{center}
+{\Huge Lois de probabilité} 
+\end{center}
+
+\section{Lois à valeurs entières}
+
+\begin{tabular}{|M{3.7cm}|M{6.8cm}|M{3.2cm}|M{3.5cm}|}
+\hline
+Loi & Détermination des $p_k$ & Moments & $\varphi(t)$ \\
+\hline 
+\hline 
+Bernoulli $\mathcal{B}(1,p) \newline (p \in ]0,1[)$ & $\mathbb{P}(X=1)=p \newline \mathbb{P}(X=0)=1-p \newline$ 0, sinon & $\mathbb{E}(X)=p \newline \text{Var}(X)=p(1-p)$ & $1-p+pe^{it}$ \\
+\hline
+Binomiale $\mathcal{B}(n,p) \newline (n \in \mathbb{N}^*, p\in ]0,1[)$ & $\mathbb{P}(X = k \in [\![0,n]\!]) = \dbinom{k}{n}p^k(1-p)^{n-k} \newline$ 0, sinon & $\mathbb{E}(X)=np \newline \text{Var}(X)=np(1-p)$ & $(1-p+pe^{it})^n$ \\
+\hline
+Poisson $\mathcal{P}(\lambda)  \newline (\lambda \in \mathbb{R}_+^*)$ & $\mathbb{P}(X = k \in \mathbb{N}) = e^{-\lambda} \dfrac{\lambda^k}{k!} \newline$ 0, sinon & $\mathbb{E}(X)=\lambda \newline \text{Var}(X)=\lambda$ & $e^{-\lambda(1-e^{it})}$ \\
+\hline
+Géométrique (ou de Pascal) $\mathcal{G}(p) \newline (p \in ]0,1[)$ & $\mathbb{P}(X = k \in \mathbb{N}^*) = (1-p)^{k-1}p \newline$ 0, sinon & $\mathbb{E}(X)=\dfrac{1}{p} \newline \text{Var}(X)=\dfrac{1-p}{p^2}$ & $\dfrac{pe^{it}}{1-(1-p)e^{it}}$ \\
+\hline
+\end{tabular}
+
+\section{Lois continues}
+
+\begin{tabular}{|M{2.1cm}|M{6.1cm}|M{3cm}|M{3.9cm}|M{1.7cm}|}
+\hline
+Loi & Densité $f(x)$ & FdR $F(x)$ & Moments & $\varphi(t)$ \\
+\hline 
+\hline 
+$\beta_1(p,q) \newline (p>0, q>0)$ & $\dfrac{\Gamma(p+q)}{\Gamma(p) \Gamma(q)}x^{p-1}(1-x)^{q-1} \mathbbm{1}_{[0,1]}(x)$ & & $\mathbb{E}(X) = \dfrac{p}{p+q} \newline \text{Var}(X) = \dfrac{pq}{(p+q)^2(p+q+1)}$ &  \\
+\hline 
+$\beta_2(p,q) \newline (p>0, q>0)$ & $\dfrac{\Gamma(p+q)}{\Gamma(p) \Gamma(q)} \dfrac{x^{p-1}}{(1+x)^{p+q}}\mathbbm{1}_{\mathbb{R_+}}(x)$ & & $\mathbb{E}(X) = \dfrac{p}{q-1} \text{ si } q>1 \newline \text{Var}(X) = \dfrac{p(p+q-1)}{(q-2)(q-1)^2}$ si $q>2$ &  \\
+\hline
+$\gamma(p,\theta) \newline (p>0, q>0)$ & $\dfrac{\theta^p e^{-\theta x}x^{p-1}}{\Gamma(p)} \mathbbm{1}_{\mathbb{R_+}}(x)$ & $1-e^{-\theta x} \displaystyle \sum \limits_{k=1}^{p-1} \dfrac{\theta^k x^k}{k!} \newline \text{ si } p \in \mathbb{N}^* \text{ et } x>0 \newline$ 0, sinon & $\mathbb{E}(X) = \dfrac{p}{\theta} \newline \text{Var}(X) = \dfrac{p}{\theta^2}$ & $\left(\dfrac{\theta}{\theta-it} \right)^p$ \\
+\hline
+Exponentielle $\varepsilon(\theta) (\theta > 0)$ & $\theta e^{-\theta x} \mathbbm{1}_{\mathbb{R_+}}(x)$ & $1-e^{-\theta x} \text{ si } x>0 \newline$ 0, sinon & $\mathbb{E}(X) = \dfrac{1}{\theta} \newline \text{Var}(X) = \dfrac{1}{\theta^2}$ & $\dfrac{\theta}{\theta-it} $ \\
+\hline
+Cauchy & $\dfrac{1}{\pi} \dfrac{1}{1+x^2}$ & $\dfrac{1}{2} + \dfrac{1}{\pi} \text{Arctan}(x)$ & AUCUN & $e^{-\vert t \vert} $ \\
+\hline
+Fisher - Snedecor $\mathcal{F}(p,q) \newline (p>0, q>0)$ & $p^{\frac{p}{2}}q^{\frac{q}{2}}  \dfrac{\Gamma \left( \dfrac{p+q}{2} \right)}{\Gamma \left(\dfrac{p}{2} \right) \Gamma \left( \dfrac{q}{2} \right)} \dfrac{x^{\frac{p}{2}-1}}{(q+px)^{\frac{p+q}{2}}}\mathbbm{1}_{\mathbb{R_+}}(x)$ &  & $\mathbb{E}(X)=\dfrac{q}{q-2} \text{ si } q>2 \newline \text{Var}(X)=\dfrac{2q^2(p+q-2)}{p(q-2)^2(q-4)} \text{ si } q > 4$ &\\
+\hline
+Gumbel $(\theta > 0)$ & $\theta e^{-x-\theta e^{-x}}$	& $e^{-\theta e^{-x}}$ & & \\
+\hline
+$\chi^2_p (p >0)$ & $\dfrac{e^{-\frac{x}{2}} x^{\frac{p}{2}-1}}{2^{\frac{p}{2}\Gamma (\frac{p}{2})}} \mathbbm{1}_{\mathbb{R}_+}(x)$ & & $\mathbb{E}(X)=p \newline \text{Var}(X)=2p$ & \\
+\hline
+\end{tabular}
+
+\newpage
+
+\begin{tabular}{|M{1.8cm}|M{5.6cm}|M{3.6cm}|M{3.4cm}|M{2.4cm}|}
+\hline
+Loi & Densité $f(x)$ & FdR $F(x)$ & Moments & $\varphi(t)$ \\
+\hline 
+\hline 
+Laplace $(\mu \in \mathbb{R}, \newline b >0)$ & $\dfrac{1}{2b}e^{-\dfrac{|x- \mu|}{b}}$ &  & $\mathbb{E}(X)=\mu \newline \text{Var}(X)= 2b^2$& $\dfrac{e^{\mu i t}}{1+b^2t^2}$ \\
+\hline
+Logistique $(a>0, \newline b>0)$ & $\dfrac{abe^{-bx}}{(1+ae^{-bx})^2}$ & $\dfrac{1}{1+ae^{-bx}}$ & $\mathbb{E}(X)=\dfrac{\ln(a)}{b} \newline \text{Var}(X)=\dfrac{\pi^2}{3b^2}$ & \\
+\hline
+Lognormale $(\sigma^2>0)$ & $\dfrac{1}{\sqrt{2\pi}\sigma} e^{-\frac{1}{2 \sigma^2}(\ln(x)-m)^2} \dfrac{1}{x} \mathbbm{1}_{\mathbb{R}_+}(x)$ & & $\mathbb{E}(X)=e^{m+\frac{\sigma^2}{2}} \newline \text{Var}(X)=e^{2m}(e^{2\sigma^2}-e^{\sigma^2})$ & \\
+\hline
+Normale $\mathcal{N}(0,1)$ & $\dfrac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$ & & $ n\in \mathbb{N} \newline \mathbb{E}(X^{2n+1}) = 0 \newline \mathbb{E}(X^{2n})=\dfrac{(2n)!}{2^nn!}$ & $e^{-\frac{t^2}{2}}$ \\
+\hline
+Normale $\mathcal{N}(m,\sigma^2) \newline (m \in \mathbb{R}, \newline \sigma>0)$ & $\dfrac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(x-m)^2}{2 \sigma^2}}$ & & $\mathbb{E}(X) = m \newline \text{Var}(X)=\sigma^2 $ & $e^{itm-\frac{t^2 \sigma^2}{2}}$ \\
+\hline
+Normale $\mathcal{N}(m,\Sigma) \newline (m \in \mathbb{R}^p, \newline \det(\Sigma)>0)$ & $\dfrac{1}{(2\pi)^{\frac{p}{2}} \sqrt{\det(\Sigma)}}e^{- \frac{1}{2}(x-m)^T \Sigma^{-1} (x-m)}$ & & $\mathbb{E}(X) = m \newline \text{Var}(X)=\Sigma $ & $e^{it^Tm-\frac{t^T \Sigma t}{2}}$ \\
+\hline
+Pareto $\newline (\beta>0, \newline x_0>0)$ & $\dfrac{\beta x_0^{\beta}}{x^{\beta+1}} \mathbbm{1}_{x \geq x_0}(x)$& $ \left[ 1- \left( \dfrac{x_0}{x}\right)^{\beta} \right] \mathbbm{1}_{x \geq x_0}(x)$ & $ \text{ si } \beta > 1, \mathbb{E}(X)=\dfrac{\beta x_0}{\beta-1}  \newline \text{ si } \beta >2, \text{Var}(X) = \dfrac{ \beta x_0^2}{(\beta-1)^2(\beta-2)} $& \\
+\hline	
+Student $\mathcal{T}(p) \newline (p>0)$ & $\dfrac{1}{\sqrt{p}} \dfrac{\Gamma \left( \dfrac{p+1}{2} \right)}{\Gamma \left(  \dfrac{1}{p}\right) \Gamma \left( \dfrac{p}{2}\right)} \dfrac{1}{\left( 1 + \dfrac{x^2}{p}\right)^{\frac{p+1}{2}}}$& & $\mathbb{E}(X) = 0 \newline \text{Var}(X)= \dfrac{p}{p-2} \text{ si } p>2$ & \\
+\hline
+Uniforme $\mathcal{U}([a,b]) \newline (a<b)$& $\dfrac{1}{b-a} \mathbbm{1}_{[a,b]}(x)$ & $0, \text{ si } x \leq a \newline \dfrac{x-a}{b-a} \text{ si } x \in [a,b] \newline 1 \text{ si } x > b$ & $\mathbb{E}(X)= \dfrac{a+b}{2} \newline \text{Var}(X)=\dfrac{(b-a)^2}{12}$ & $e^{it\frac{a+b}{2}} \dfrac{\sin(t \frac{b-a}{2})}{t \frac{b-a}{2}}$\\
+\hline
+Weibull $(\alpha >0, \newline \theta >0)$ & $\alpha \theta e^{-\theta x^{\alpha}} x^{\alpha -1} \mathbbm{1}_{\mathbb{R}_+}(x)$ & $(1-e^{-\theta x^{\alpha}}) \mathbbm{1}_{\mathbb{R}_+}$& & \\
+\hline
+\end{tabular}
+
+\section{Propriétés}
+
+\section{Distributions liées}
+
+\section{Rappels}
+
+\end{document}
