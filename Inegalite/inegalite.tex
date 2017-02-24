@@ -1,0 +1,222 @@
+\documentclass[landscape,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{fancybox}
+
+\addtolength{\voffset}{-2.9cm}
+\addtolength{\textheight}{5.8cm}
+\addtolength{\hoffset}{-1.5cm}
+\addtolength{\textwidth}{3.2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0.5pt} %épaisseur de la règle inf
+\renewcommand{\headrulewidth}{0.5pt} %épaisseur de la règle sup
+\renewcommand{\headsep}{12pt}
+\renewcommand{\footskip}{20pt}
+
+\fancyhead[R]{}
+\fancyhead[L]{}
+\fancyfoot[R]{Formulaire sur les inégalités}
+\fancyfoot[L]{{\tiny v : 17.02.23}}
+
+\setlength\parindent{0em}
+
+\usepackage{cadre}
+
+\usepackage{bbm} % indicatrice
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{ine}{Inégalité}{compteur_ine}
+
+\newboxedtheorem[boxcolor= blue!20!black!30!green, background=white, titlebackground=white,
+titleboxcolor = blue!20!black!30!green]{defin}{Définition}{compteur_dfn}
+
+\newboxedtheorem[boxcolor= black, background=white, titlebackground=white,
+titleboxcolor = black]{att}{ATTENTION}{}
+
+\newboxedtheorem[boxcolor= blue, background=white, titlebackground=white,
+titleboxcolor = blue]{astu}{Astuce}{}
+
+\newboxedtheorem[boxcolor= black!30, background=white, titlebackground=white,
+titleboxcolor = black!30]{exe}{Exemple}{compteur_exe}
+
+\newboxedtheorem[boxcolor=brown, background=white, titlebackground=white,
+titleboxcolor = brown]{expli}{Explication}{compteur_expli}
+
+\newboxedtheorem[boxcolor=blue!50!red, background=white, titlebackground=white,
+titleboxcolor = blue!50!red]{rappel}{Rappel}{compteur_rap}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\begin{document}
+
+\begin{center}
+\section*{Formulaire sur les inégalités} 
+\end{center}
+
+\begin{ine}[Inégalité triangulaire et généralisation]
+$$|a+b| \leqslant |a| + |b| \Longrightarrow \left| \sum \limits_{i=0}^n x_i  \right| \leqslant \sum \limits_{i=0}^n |x_i|$$ 
+\end{ine}
+
+\begin{ine}[Inégalité triangulaire-bis]
+$$||a|-|b|| \leqslant |a-b|$$ 
+\end{ine}
+
+\begin{ine}[Inégalité de Taylor-Lagrange]
+\begin{center}
+Soient $a, b \in \mathbb{R}$, tel que $a<b$ et $f : [a;b] \longrightarrow \mathbb{K}$. Soit $n \in \mathbb{N}$ et $f$ de classe $\mathcal{C}^{(n+1)}$. Soit $M$ un majorant de $|f^{(n+2)}|$ sur $[a;b]$. 
+Alors, $\forall x \in [a;b], |f(x)- \underbrace{T_{n,f,a}(x)} \limits_{\sum \limits_{k=0}^n \frac{f^{(k)}(a)}{k!}(x-a)^k}| \leqslant M \dfrac{|x-a|^{n+1}}{(n+1)!}$
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de convexité]
+$f$ est convexe sur $I$ si et seulement si : 
+\begin{itemize}
+\item $\forall a,b \in I, \forall t \in [0;1], f(ta+(1-t)b) \leqslant tf(a)+(1-t)f(b)$\\
+\item $\forall x_0 \in I, \forall x \in I, f(x) \geqslant f(x_0)+f'(x_0)(x-x_0)$\\
+\item $\forall a<b, \forall t \in [a;b], f(t) \leqslant \dfrac{f(b)-f(a)}{b-a}(t-a)+f(a)$
+\end{itemize}
+\end{ine}
+
+\begin{ine}[Inégalité de concavité]
+$f$ est concave sur $I$ si et seulement si : 
+\begin{itemize}
+\item $ \forall a,b \in I, \forall t \in [0;1], f(ta+(1-t)b) \geqslant tf(a)+(1-t)f(b)$\\
+\item $\forall x_0 \in I, \forall x \in I, f(x) \leqslant f(x_0)+f'(x_0)(x-x_0)$\\
+\item $\forall a<b, \forall t \in [a;b], f(t) \geqslant \dfrac{f(b)-f(a)}{b-a}(t-a)+f(a)$
+\end{itemize}
+\end{ine}
+
+\begin{exe}[Exemples d'inégalité de concavité et de convexité]
+$$\forall x \in \mathbb{R}, x-1 \geqslant \ln(x)$$
+$$\forall x \in \mathbb{R}, e^x \geqslant x+1$$
+$$\forall x \in [0;\dfrac{\pi}{2}], \sin(x) \geqslant \dfrac{2}{\pi}x$$
+\end{exe}
+
+\begin{ine}[Inégalité de Jensen]
+\begin{center}
+Soit $f : I \longrightarrow \mathbb{R}$, convexe. Alors $\forall n \in \mathbb{N}^*,\forall i \in [\![1;n]\!], x_i \in I, \lambda_i \in \mathbb{R}_+$ vérifiant $\sum \limits_{i=1}^n \lambda_i =1$, 
+ on a $f(\sum \limits_{i=1}^n \lambda_i x_i) \leqslant \sum \limits_{i=1}^n \lambda_i f(x_i)$.
+\end{center}
+\end{ine}
+
+\begin{exe}[Inégalité de Jensen en probabilité]
+\begin{center}
+Soit $X$ une variable aléatoire et $f$ une fonction convexe, alors on a 
+$ f(\mathbb{E}(X))  \leq \mathbb{E}(f(X))$.
+\end{center}
+\end{exe}
+
+\begin{exe}[Conséquences de $\mathbb{E}(X^2) < +\infty$]
+$$\mathbb{E}(X^2) < +\infty \Longrightarrow \mathbb{E}(X)  < +\infty \text{ et } \text{Var}(X)  < +\infty$$
+\end{exe}
+
+\begin{ine}[Inégalité des accroissements finis]
+\begin{center}
+$f : I \subset \mathbb{R} \longrightarrow \mathbb{R}$, dérivable telle que $f'$ est bornée. Soient $m = \inf \limits_I f'$ et $M = \sup \limits_I f'$. Alors, $\forall a,b \in I, a \leqslant b, m(b-a) \leqslant f(b)-f(a) \leqslant M(b-a)$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité des accroissements finis-bis]
+\begin{center}
+Soient $a,b \in \mathbb{R}$ avec $a<b$. $f : [a;b] \longrightarrow \mathbb{C}$ et $g : [a;b] \longrightarrow \mathbb{R}$, continues sur $[a;b]$ et dérivable sur $]a;b[$. \\
+On suppose $\forall t \in ]a;b[, |f'(t)| \leqslant g'(t)$. Alors $|f(b)-f(a)| \leqslant g(b)-g(a)$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité des moyennes]
+\begin{center}
+Si $n \in \mathbb{N}^*, \forall k \in [\![1;n]\!], a_k \in \mathbb{R}_+$, on a $\underbrace{\dfrac{n}{\sum \limits_{k=1}^n \frac{1}{a_k}}} \limits_{m_{harm}(a_1,...,a_n)} \leqslant  \underbrace{\sqrt[n]{\prod \limits_{k=1}^n a_k}} \limits_{ m_{geom}(a_1,...,a_n)} \leqslant \underbrace{\dfrac{1}{n}\sum \limits_{k=1}^n a_k} \limits_{m_{arith}(a_1,...,a_n)}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Lemme de Gauss]
+\begin{center}
+Soient $a,b \in \mathbb{R}_+$,$(p,q)$ un couple d'exposants conjugués (id, $\frac{1}{p}+\frac{1}{q}=1$).
+Alors $ab \leqslant \dfrac{a^p}{p}+\dfrac{b^q}{q}$. 
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Hölder]
+\begin{center}
+Soit $n \in \mathbb{N}^*, \forall i \in [\![1;n]\!], x_i \in \mathbb{R}_+, y_i \in \mathbb{R}_+$. $(p;q) \in (\mathbb{R}_+^*)^2$, un couple d'exposants conjugués (ie $\frac{1}{p}+\frac{1}{q}=1$), \\
+on a $\sum \limits_{i=1}^n x_iy_i \leqslant  \left( \sum \limits_{i=1}^n (x_i)^p \right)^\frac{^1}{p}  \left(\sum \limits_{i=1}^n (y_i)^q \right)^\frac{^1}{q}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Minkowski]
+\begin{center}
+Soit $n \in \mathbb{N}^*, p \geqslant 1, \forall i \in [\![1;n]\!], x_i \in \mathbb{R}_+, y_i \in \mathbb{R}_+$. 
+Alors $ \left(\sum \limits_{i=1}^n (x_i+y_i)^p \right)^{\frac{1}{p}} \leqslant  \left(\sum \limits_{i=1}^n (x_i)^p \right)^{\frac{1}{p}}+\left(\sum \limits_{i=1}^n (y_i)^p \right)^{\frac{1}{p}}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Bernoulli]
+\begin{center}
+Soit $h \in \mathbb{R}_+, n \in \mathbb{N}, (1+h)^n \geqslant 1+nh$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Cauchy-Schwartz]
+\begin{center}
+Soit $E$ un $\mathbb{R}$-espace vectoriel, $\forall x,y \in E, $<$x,y$>$^2 \leqslant $<$x,x$>$ $<$y,y$>
+\end{center}
+\end{ine}
+
+\begin{exe}[Exemples d'inégalité de Cauchy-Schwartz]
+$$\forall n \in \mathbb{N}^*,\forall (\alpha_i),(\beta_i) \in \mathbb{R}^n, \left(\sum  \limits_{i=1}^n \alpha_i \beta_i \right)^2 \leqslant \sum \limits_{i=1}^n \alpha_i^2 \sum \limits_{i=1}^n \beta_i^2$$
+$$\forall f,g \in \mathcal{C}([a;b],\mathbb{R}),\left( \displaystyle \int_a^b fg \right)^2 \leqslant \displaystyle \int_a^b f^2 \displaystyle \int_a^b g^2$$
+$$\forall A,B \in M_n(\mathbb{R}),\left( \mbox{Tr}(^tAB) \right)^2 \leqslant \mbox{Tr}(^tAA)\mbox{Tr}(^tBB)$$
+\end{exe}
+
+\begin{ine}[Inégalité de Markov classique]
+\begin{center}
+Soit $\mathbb{P}$ une loi de probabilité. Alors, 
+$\forall t > 0$, $\mathbb{P}(X \geq t) \leq \dfrac{\mathbb{E}(X)}{t}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Markov généralisée]
+\begin{center}
+Soit $\mathbb{P}$ une loi de probabilité et $f$ une fonction croissante et positive. Alors, 
+$\forall t > 0$, $\mathbb{P}(X \geq t) \leq \dfrac{\mathbb{E}(f(X))}{f(t)}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Bienaymé-Tchebychev]
+\begin{center}
+Soit $X$ une variable aléatoire d'espérance $\mu$ et de variance finie $\sigma^2$. Alors, 
+$\forall \alpha >0, \mathbb{P}(|X-\mu| \geq \alpha) \leq \dfrac{\sigma^2}{\alpha^2}$.
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité de Hoeffding]
+\begin{center}
+Soit une suite $(X_k)_{k \in [\![1;n]\!]}$ de variables aléatoires réelles indépendantes vérifiant, pour deux suites $(a_k)_{k \in [\![1;n]\!]}$, $(b_k)_{k \in [\![1;n]\!]}$ de nombres réels tels que : \\
+$\forall k, a_k < b_k \text{ et } \mathbb{P}(a_k \leq X_k \leq b_k) =1$
+En posant $S_n = \dfrac{1}{n} \displaystyle \sum \limits_{k=1}^n X_k$, on a alors $\forall t > 0$, 
+$\mathbb{P}(S_n - \mathbb{E}(S_n) \geq t) \leq \exp\left(-\dfrac{2n^2t^2}{\sum \limits_{k=1}^n (b_k-a_k)^2}\right)$
+\end{center}
+\end{ine}
+
+\begin{ine}[Théorème de la projection sur un convexe complet]
+\begin{center}
+Soient $E$ un espace préhilbertien réel, $x$ un vecteur et $C$ un ensemble convexe complet non vide de $E$.
+Il existe une unique application $P_C$ de $E$ dans $C$, dite projection sur le convexe, qui à $x$ associé le point $P_C(x)$ de $C$, tel que la distance de $x$ à $C$ soit égale à celle de $x$ à $P_C(x)$. Le vecteur $P_C(x)$ est l'unique point de $C$ vérifiant les deux propositions suivantes, qui sont équivalentes : 
+\begin{enumerate}
+\item $\forall y \in C, \parallel x - P_C(x) \parallel \leq \parallel x - y \parallel$ \\
+\item $\forall y \in C, <x-P_C(x), y-P_C(x) > \leq 0$
+\end{enumerate}
+\end{center}
+\end{ine}
+
+
+\end{document}
