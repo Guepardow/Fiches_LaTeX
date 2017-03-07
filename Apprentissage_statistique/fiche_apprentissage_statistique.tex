@@ -1,0 +1,712 @@
+\documentclass[landscape,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{fancybox}
+
+\addtolength{\voffset}{-3cm}
+\addtolength{\textheight}{5cm}
+\addtolength{\hoffset}{-1.5cm}
+\addtolength{\textwidth}{4cm}
+
+\setlength\parindent{0em}
+
+\usepackage{cadre}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{theo}{Théorème}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{prop}{Proposition}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{coro}{Corollaire}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{lemme}{Lemme}{compteur_theo}
+
+\newboxedtheorem[boxcolor= blue!20!black!30!green, background=white, titlebackground=white,
+titleboxcolor = blue!20!black!30!green]{defin}{Définition}{compteur_dfn}
+
+\newboxedtheorem[boxcolor= black, background=white, titlebackground=white,
+titleboxcolor = black]{att}{ATTENTION}{}
+
+\newboxedtheorem[boxcolor= blue, background=white, titlebackground=white,
+titleboxcolor = blue]{astu}{Astuce}{}
+
+\newboxedtheorem[boxcolor= black!30, background=white, titlebackground=white,
+titleboxcolor = black!30]{exe}{Exemple}{compteur_exe}
+
+\newboxedtheorem[boxcolor=brown, background=white, titlebackground=white,
+titleboxcolor = brown]{expli}{Explication}{compteur_expli}
+
+\newboxedtheorem[boxcolor=blue!50!red, background=white, titlebackground=white,
+titleboxcolor = blue!50!red]{rappel}{Rappel}{compteur_rap}
+
+\begin{document}
+\begin{center}
+{\Huge Apprentissage statistique} \\
+\end{center}
+
+\subsection*{Théorie de la mesure}
+
+\begin{rappel}[Espace mesurable]
+Soit $\mathcal{F}$ une famille de parties d'un ensemble $\Omega$. On dit que $\mathcal{F}$ est une tribu sur $\Omega$ ssi \\
+i) l'ensemble $\Omega \in \mathcal{F}$ \\
+ii) $A \in \mathcal{F} \Longrightarrow \overline{A} \in \mathcal{F}$ {\small [\textsc{stabilité par complémentation}]} \\
+iii) $\forall i \in \mathbb{N}, A_i \in \mathcal{F} \Longrightarrow \bigcap \limits_{i \in \mathbb{N}} A_i \in \mathcal{F}$ {\small [\textsc{Stabilité par intersection dénombrable}]} \\
+Le couple ($\Omega$, $\mathcal{F}$) est un espace mesurable.
+\end{rappel}
+ 
+ \begin{rappel}[Fonction mesurable]
+ Soient $E$ et $F$ des espaces mesurables munis de leurs tribus respectives $\mathcal{E}$ et $\mathcal{F}$. \\
+ Une fonction $f : E \longrightarrow F$ est dite $(\mathcal{E},\mathcal{F})$-mesurable si la tribu image réciproque par $f$ de la tribu $\mathcal{F}$ est incluse dans $\mathcal{E}$, c'est-à-dire si $\forall B \in \mathcal{F}, f^{-1}(B) \in \mathcal{E}$.
+ \end{rappel}
+
+\subsection*{Notations}
+
+\begin{defin}[Ensemble $F^E$]
+Si $E$ et $F$ sont deux ensembles, $F^E$ désigne l'ensemble des fonctions de $E$ dans $F$.
+\end{defin}
+
+\begin{defin}[Espérance d'une fonction]
+Si $\mathbb{P}$ désigne une loi de probabilité sur un espace mesurable $(\varepsilon, \mathcal{T})$, et $f : \varepsilon \longrightarrow \mathbb{R}$ avec $\mathcal{B}(\mathbb{R})$ mesurable, \\
+alors on désigne l'espérance de la fonction $f$ par $\mathbb{E}(f)$ (ou $\mathbb{E}_{\mathbb{P}} (f)$) ou encore par $\mathbb{P}(f)$.
+\end{defin}
+
+ \begin{defin}[Indicatrice]
+On note $\delta_a$ la mesure de probabilités valant 1 sur $\{a \}$.
+\end{defin}
+
+\subsection*{Apprentissage}
+
+\begin{defin}[Espace $\mathcal{X}$ et $\mathcal{Y}$]
+On considère deux espaces : \\
+$\mathcal{X}$ qui est l'espace des entrées (aussi appelées covariables ou features) ; \\
+$\mathcal{Y}$ qui est l'espace des sorties (aussi appelées variables d'intérêt ou labels). 
+\end{defin}
+
+\begin{defin}[Différents types d'apprentissages]
+Quand on dispose de données de la forme $(x_1,y_1), ..., (x_n,y_n)$, on parle d'apprentissage supervisée. On connaît à la fois $x_i$ \textbf{et} $y_i$. \\
+Il existe beaucoup de situations pratiques (comme en bio-génétique pour le séquençage de l'ADN humain) de  où acquérir les labels $y_i$ coûte cher, auquel cas les données à disposition sont de la forme $(x_1,y_1),...,(x_r,y_r),x_{r+1},...,x_n$. On parle alors d'apprentissage semi-supervisée. \\
+Il y a aussi le cadre de l'apprentissage non supervisée où l'on n'observe que des $x_i$.
+\end{defin}
+
+\begin{exe}[Détermination de l'appartenance à une classe]
+Déterminer la classe homme et femme à partir des relevés des tailles de l'ensemble de la population. On souhaite déterminer $\theta=(\alpha, \mu_F, \sigma_F^2, \mu_H, \sigma_H^2)$, tel que : \\
+$\alpha=\mathbb{P}(y=\mbox{femme}) ; \\
+P(x | y=\mbox{homme})=\mathcal{N}(\mu_H,\sigma_H^2) ; \\
+P(x | y=\mbox{femme})=\mathcal{N}(\mu_F,\sigma_F^2).$ \\
+On a $f(x,\theta)= \alpha \dfrac{1}{\sqrt{2\pi \sigma_F^2}}e^{-\frac{(x-\mu_F)^2}{2\sigma_F^2}}+(1-\alpha)\frac{1}{\sqrt{2\pi \sigma_H^2}}e^{-\dfrac{(x-\mu_H)^2}{2\sigma_H^2}}$. \\
+Pour déterminer $y$, on peut alors utiliser le critère du maximum de vraisemblance (ou même la log-vraisemblance). \\
+Les deux méthodes les plus communes sont la montée du gradient et l'algorithme espérance-maximisation (algorithme EM). \\
+\end{exe}
+
+\begin{defin}[Échantillon]
+$\mathcal{D}_n = \left( (x_1,y_1), ..., (x_n,y_n) \right) \in \mathcal{Z}^n$, on parle d'échantillon.
+\end{defin}
+
+\begin{defin}[Approximateur de $\mathbb{P}$]
+$\mathbb{P}$ la loi des données, inconnue. Ainsi, on note $\mathcal{D}_n \sim \mathbb{P}^{\otimes n}$, où $\mathbb{P}^{\otimes n}$ est une probabilité sur $\mathcal{Z}^n$. \\
+On observe $\mathbb{P}_n : \mathbb{P}_n = \dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n \delta_{(x_i,y_i)}.$ \\
+$\mathbb{P}_n$ est la distribution de probabilité empirique, $\mathbb{P}_n$ est une probabilité sur $\mathcal{Z}$. On dit que $\mathbb{P}_n$ est un approximateur de $\mathbb{P}$.
+\end{defin}
+
+\begin{defin}[Prédicteur / Classifieur]
+On appelle prédicteur (ou classifieur) toute fonction $h$ telle que $h : x \in \mathcal{X} \longmapsto y \in \mathcal{Y}$. $h \in \mathcal{H}$, $\mathcal{H}$ est le modèle.
+\end{defin}
+
+\begin{defin}[Fonction de pertes]
+On appelle fonction de pertes toute fonction $l$ telle que $l : \mathcal{Y} \times \mathcal{Y} \longrightarrow \mathbb{R}_+ $.
+\end{defin}
+
+\begin{exe}[Fonctions de pertes]
+Pour $y,y' \in \mathcal{Y}=\{0,1\}$, on peut définir plusieurs fonctions de pertes : \\
+$\bullet l(y,y') = 1_{\{y \neq y'\}} \\
+\bullet l(y,y') = |y - y'| \\
+\bullet l(y,y') = (y-y')^2 $
+\end{exe}
+
+\subsection*{Risque}
+
+\begin{defin}[Risque d'un prédicteur]
+On définit le risque d'un prédicteur $h$ par $R(h)=\mathbb{P}(l(h(x),y))$, pour $(x,y) \sim \mathbb{P}$.
+\end{defin}
+
+\begin{att}[Risque et risque empirique]
+La notion de risque est virtuelle : elle ne pourra jamais être calculée. C'est pour cela que l'on utilise la notion de risque empirique.
+\end{att}
+
+\begin{defin}[Risque empirique d'un prédicteur]
+On définit le risque empirique d'un prédicteur $h$ par $R_n(h)=\mathbb{P}_n(l(h(x),y))$, pour $(x,y) \sim \mathbb{P}_n$. Ainsi $R_n(h)=\dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n l(h(x_i),y_i)$. \\
+Heureusement, le risque empirique converge vers le risque. C'est une convergence presque sûrement, par analogie à la loi des grands nombres.
+\end{defin}
+
+\begin{defin}[Risque de Bayes]
+On définit le risque de Bayes par $R_{\mbox{{\tiny Bayes}}}=\inf \limits _{\substack{h : \mathcal{X} \longrightarrow \mathcal{Y} \\ \mbox{ {\tiny mesurable}}}} R(h)$. \\
+L'intérêt du risque de Bayes n'est rien d'autre que théorique. Il s'agit juste de garantir de la bonne qualité du classifieur.
+\end{defin}
+
+\begin{defin}[Risque empirique et fonction $h$]
+D'une manière générale, lorsqu'on se donne un modèle $\mathcal{H}$ (ensemble des classifieurs, et rien ne nous dit que $R_{\mbox{{\tiny Bayes}}} \in \mathcal{H}$), on peut définir $R_{\mathcal{H}}^{\star}=\inf \limits_{h \in \mathcal{H}} R(h)$. \\
+On appelle minimum de risque empirique la quantité $\inf \limits_{h \in \mathcal{H}} R_n(h)$. Si l'$\inf$ est atteint, on note $h_{MRE}$ un tel prédicteur. \\
+\end{defin}
+
+\begin{att}[Risques de $h_{MRE}$]
+En général, $R(h_{MRE}) \neq R_n(h_{MRE})$.
+\end{att}
+
+
+\begin{tabular}{|l|l|l|}
+\hline
+En résumé & sur $\mathcal{H}$ & sur $\mathcal{Y}^{\mathcal{X}}$ mesurable \\ 
+\hline
+$\inf R(h)$ & $R_{\mathcal{H}}^{\star}$ & $R_{\mbox{{\tiny Bayes}}}$ \\
+\hline
+$\inf R_n(h)$ & risque empirique & $\cdot$ \\
+\hline
+\end{tabular}
+
+\begin{att}
+Question : pourquoi n'a-t-on pas cherché à définir $\inf \limits _{\substack{h : \mathcal{X} \longrightarrow \mathcal{Y} \\ \mbox{ {\tiny mesurable}}}} R_n(h)$ ? \\
+Il s'agirait alors de chercher $\inf \limits _{\substack{h : \mathcal{X} \longrightarrow \mathcal{Y} \\ \mbox{ {\tiny mesurable}}}} \dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n l[h(x_i),y_i]$. Il suffirait tout simplement de choisir $h$ telle que : 
+$\left\{
+\begin{array}{ll}
+h(x_i)=y_i & \forall i \\
+h(x_i)=0 & \mbox{sinon} \\
+\end{array}
+\right.$.
+Ainsi, l'$\inf$ vaut toujours 0 quelque soit $l$.
+\end{att}
+
+\subsection*{Rappels de probabilité}
+
+Dans la suite, on travaillera sur l'espace mesuré $(\Omega, \mathcal{T}, \mathbb{P})$, où $\Omega$ est l'espace des états, $\mathcal{T}$ une tribu et $\mathbb{P}$ une probabilité. \\
+
+\begin{prop}[Inégalité classique]
+$\bullet \mathbb{P}(\bigcup \limits_{n \in \mathbb{N}} A_n) \leq \displaystyle \sum \limits_{n \in \mathbb{N}} \mathbb{P}(A_n)$. \\
+$\bullet \left(\mathbb{P}(\bigcup \limits_{n \in \mathbb{N}} A_n) = \displaystyle \sum \limits_{n \in \mathbb{N}} \mathbb{P}(A_n) \right)$ si les $A_n$ sont disjoints deux à deux.
+\end{prop}
+
+\begin{defin}[Variable aléatoire]
+On se place dans l'espace mesuré $(\Omega, \mathcal{T}, \mathbb{P})$. On appelle variable aléatoire de $\Omega$ vers $\mathbb{R}_+$ toute fonction mesurable $X$ de $\Omega$ vers $\mathbb{R}_+$.
+\end{defin}
+
+\begin{prop}[Expression de $\mathbb{E}$]
+On a 
+\begin{center}
+$\mathbb{E}(X) = \displaystyle \int_0^{+ \infty} \mathbb{P}\{X > t \} \, \mathrm{dt}$.
+\end{center}
+\end{prop}
+
+\subsubsection*{Inégalités}
+
+\begin{prop}[Inégalité de convexité]
+Soit $f$ convexe, on a alors 
+\begin{center}
+$\forall \lambda \in [0,1], \forall x,y \in \mathbb{R}, f(\lambda x +(1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y)$.
+\end{center}
+\end{prop}
+
+\begin{coro}[Inégalité probabilité / fonction]
+Soit $X$ une variable aléatoire et $f$ une fonction convexe, alors on a 
+\begin{center}
+$ f(\mathbb{E}(X))  \leq \mathbb{E}(f(X))$.
+\end{center}
+\end{coro}
+
+\begin{exe}[Conséquences de $\mathbb{E}(X^2) < +\infty$]
+\begin{center}
+$\mathbb{E}(X^2) < +\infty \Longrightarrow \mathbb{E}(X)  < +\infty \text{ et } \text{Var}(X)  < +\infty$.
+\end{center}
+\end{exe}
+
+\begin{prop}[Inégalité de Markov classique]
+Soit $\mathbb{P}$ une loi de probabilité. Alors, 
+\begin{center}
+$\forall t > 0$, $\mathbb{P}(X \geq t) \leq \dfrac{\mathbb{E}(X)}{t}$.
+\end{center}
+\end{prop}
+
+\begin{prop}[Inégalité de Markov généralisée]
+Soit $\mathbb{P}$ une loi de probabilité et $f$ une fonction croissante et positive. Alors, 
+\begin{center}
+$\forall t > 0$, $\mathbb{P}(X \geq t) \leq \dfrac{\mathbb{E}(f(X))}{f(t)}$.
+\end{center}
+\end{prop}
+
+\begin{prop}[Inégalité de Bienaymé-Tchebychev]
+Soit $X$ une variable aléatoire d'espérance $\mu$ et de variance finie $\sigma^2$. Alors, 
+\begin{center}
+$\forall \alpha >0, \mathbb{P}(|X-\mu| \geq \alpha) \leq \dfrac{\sigma^2}{\alpha^2}$.
+\end{center}
+\end{prop}
+
+\subsubsection*{Convergence}
+
+On considère dans la suite une suite $(X_n)_{n \in \mathbb{N}}$ de variables aléatoires définies sur un même espace probabilisé $(\Omega, \mathcal{T}, \mathbb{P})$. \\
+
+\begin{rappel}[Convergence en moyenne quadratique]
+On définit la convergence en moyenne quadratique d'une suite $(X_n)$ vers $X$ par :
+\begin{center}
+$X_n \xrightarrow{\text{MQ}} X \Longleftrightarrow \lim \limits_{n \to + \infty} \mathbb{E}[(X_n-X)^2] = 0$.
+\end{center}
+\end{rappel}
+
+\begin{rappel}[Convergence en probabilité]
+On définit la convergence en probabilité d'une suite $(X_n)$ vers $X$ par :
+\begin{center}
+$X_n \xrightarrow{\text{P}} X \Longleftrightarrow \lim \limits_{n \to + \infty} \mathbb{P}[|X_n-X| \geq \varepsilon] = 0, \forall \varepsilon >0$.
+\end{center}
+\end{rappel}
+
+\begin{rappel}[Convergence presque sûre]
+On définit la convergence presque sûre d'une suite $(X_n)$ vers $X$ par :
+\begin{center}
+$X_n \xrightarrow{\text{PS}} X \Longleftrightarrow \mathbb{P}[\omega | \lim \limits_{n \to + \infty} X_n(\omega) = X(\omega)] = 1$.
+\end{center}
+\end{rappel}
+
+\begin{rappel}[Convergence en loi]
+On définit la convergence en loi (ou convergence en distribution) d'une suite $(X_n)$ vers $X$ par :
+\begin{center}
+$X_n \xrightarrow{\text{L}} X \Longleftrightarrow \lim \limits_{n \to + \infty} F_{X_n}(x) = F_X(x), \forall x$ où $F_X$ est continue.
+\end{center}
+\end{rappel}
+
+\begin{prop}[Implications réciproques]
+Nous avons les implications suivantes : 
+\begin{center}
+$\begin{array}{rrcrr}
+\text{convergence PS} & \Longrightarrow & \text{convergence P} &  \Longrightarrow & \text{convergence L} \\
+& & \Uparrow & & \\
+& & \text{convergence MQ}& & 
+\end{array}$
+\end{center}
+\end{prop}
+
+\begin{theo}[Loi faible des grands nombres]
+Soit $(X_n)_{n \in \mathbb{N}^*}$ une suite de variables indépendantes et identiquement distribuées. Alors,
+\begin{center}
+$\forall \varepsilon >0, \lim \limits_{n \to + \infty} \mathbb{P} \left( \left| \dfrac{X_1+X_2+ ... + X_n}{n} - \mathbb{E}(X) \right| \geq \varepsilon \right) =0$.
+\end{center}
+\end{theo}
+
+\begin{expli}[Loi faible des grands nombres]
+La loi faible des grands nombres stipule que pour tout réel $\varepsilon$  strictement positif, la probabilité que la moyenne empirique s'éloigne de l'espérance d'au moins $\varepsilon$ tend vers 0 vers $n$ tend vers l'infini. \\
+Autrement dit, la moyenne empirique converge en probabilité vers $\mathbb{E}(X)$. Ce résultat est très important en statistique puisqu'il assure que la moyenne empirique est un estimateur convergent de l'espérance.
+\end{expli}
+
+\begin{theo}[Loi forte des grands nombres]
+Si $(X_n)_{n \in \mathbb{N}^*}$ est une suite de variables aléatoires indépendantes telle que $\mathbb{E}(|X_1|) < +\infty$, alors 
+\begin{center}
+$\dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n X_i \xrightarrow{\text{PS}} \mathbb{E}(X_1)$.
+\end{center}
+\end{theo}
+
+\begin{theo}[Théorème central limite]
+Soit $(X_n)_{n \in \mathbb{N}^*}$ une suite de variables aléatoires indépendantes telle que $\mathbb{E}(X_1^2) < +\infty$. Ceci entraîne que  l'espérance et la variance (on la considère non nul) de $X_1$ existent, on les note respectivement $\mu$ et $\sigma^2$. On pose $\overline{X}_n = \dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n X_i$. Alors 
+\begin{center}
+$Z_n = \sqrt{n} \, \dfrac{\overline{X}_n - \mu}{\sigma} \xrightarrow{\text{L}} Z \sim \mathcal{N}(0,1)$.
+\end{center}
+\end{theo}
+
+\subsection*{Caractérisation de la loi d'une variable aléatoire}
+
+\begin{defin}[Densité de probabilité]
+On dit qu'une fonction $f$ est une densité de probabilité d'une variable aléatoire réelle $X$ si pour tout réel $x$, $\mathbb{P}(X \leq x) = \displaystyle \int_{- \infty}^x f(u) \, \mathrm{d}u$.
+\end{defin}
+
+\begin{defin}[Fonction de répartition]
+La fonction de répartition de la variable aléatoire réelle $X$ est la fonction $F_X$ qui à tout réel $x$ associe $F_X(x)=\mathbb{P}(X \leq x)$.
+\end{defin}
+
+\begin{defin}[Fonction caractéristique d'une variable aléatoire]
+La fonction caractéristique d'une variable aléatoire réelle $X$ est la fonction à valeurs complexes définie sur $\mathbb{R}$ par : 
+\begin{center}
+$\begin{array}{lll}
+\chi_X(t) & = & \mathbb{E}\left[e^{itX} \right] \\
+& = & \mathbb{E}\left[\cos(tX) \right]+i \mathbb{E}\left[\sin(tX) \right] \\
+\end{array}$.
+\end{center}
+Si cette variable possède une densité $f_X$, alors $\chi_X(t)= \displaystyle \int_{\mathbb{R}} f_X(x) e^{itx} \, \mathrm{d}x$.
+\end{defin}
+
+\begin{defin}[Fonction caractéristique d'un vecteur aléatoire]
+Soit $X$ un vecteur aléatoire à valeurs dans $\mathbb{R}^d$, on appelle fonction caractéristique de $X$ la fonction $\chi_X : t \in \mathbb{R}^d \longmapsto \mathbb{E} \left( e^{i <t,X>} \right) \in \mathcal{C}(0,1)$.
+\end{defin}
+
+
+\subsection*{Variable gaussienne}
+
+\begin{rappel}[Variable gaussienne centrée réduite]
+Une variable aléatoire réelle $X$ est dite gaussienne centrée réduite si elle admet pour densité par rapport à la mesure de Lebesgue sur $\mathbb{R}$ la fonction $f : x \longmapsto \dfrac{1}{\sqrt{2 \pi}} \exp \left(- \dfrac{x^2}{2} \right)$. On note $X \sim \mathcal{N}(0,1)$.
+\end{rappel}
+
+\begin{rappel}[Variable gaussienne]
+Une variable aléatoire réelle $X$ est dite gaussienne s'il existe $(\mu, \sigma) \in \mathbb{R} \times \mathbb{R}_+$ et $Z \sim \mathcal{N}(0,1)$ tels que $X = \mu + \sigma Z$. \\
+La densité de $X$ est alors $f(x)= \dfrac{1}{\sqrt{2 \pi} \sigma} \exp \left( - \dfrac{(x-\mu)^2}{2 \sigma^2} \right)$. O note $X \sim \mathcal{N}(\mu, \sigma^2)$. \\
+Quand $\sigma=0$, on dit que $X$ est une variable gaussienne dégénérée.
+\end{rappel}
+
+\begin{rappel}[Vecteur gaussien]
+Un vecteur aléatoire $X$ à valeurs dans $\mathbb{R}^d$ est dit gaussien si toute combinaison linéaire de ses composantes est une variable aléatoire gaussienne. \\
+Si $X = (X_1, ..., X_d)^T$ est un vecteur gaussien, on définit : \\
+$\bullet$ son vecteur moyenne $\mathbb{E}(X)$ par $\mathbb{E}(X) = (\mathbb{E}(X_1), ..., \mathbb{E}(X_d))^T$ ; \\
+$\bullet$ sa matrice de variance-covariance $\text{Var}(X)$ par $\text{Var}(X) = \mathbb{E} [ (X- \mathbb{E}(X)) \times (X - \mathbb{E}(X))^T]$ ; on note qu'elle est symétrique.
+\end{rappel}
+
+\begin{theo}[Définition alternative du vecteur gaussien]
+Soit $X : \Omega \longrightarrow \mathbb{R}^d$ un vecteur aléatoire. On dit que $X$ est un vecteur gaussien de loi $\mathcal{N}(\mu, \Sigma)$ avec $\mu \in \mathbb{R}^d, \Sigma$ une matrice $d \times d$ positive ($\forall x, x^T \Sigma x \geq 0$) symétrique, si : \\
+$\forall t \in \mathbb{R}^d, \mathbb{E}(\exp(i <t,X>)) = \exp \left( i <\mu,t> - \dfrac{t^T \Sigma t}{2}  \right)$.
+\end{theo}
+
+\begin{exe}[Fonctions caractéristiques de gaussiennes]
+Pour $X \sim \mathcal{N}(0,1), \mathbb{E}(e^{itX})=e^{-\frac{1}{2}t^2}$ \\
+pour $Z=\mu + \sigma X, $ ie $ Z \sim \mathcal{N}(\mu, \sigma^2), \mathbb{E}(e^{it(\mu + \sigma X)})=e^{it \mu}e^{-\frac{1}{2}(t \sigma)^2}$ \\
+pour $Y \sim \mathcal{N}(\mu, \Sigma), \mathbb{E}(e^{i<t,Y>})=\exp \left( i <\mu,t>  - \dfrac{t^T \Sigma t}{2}\right)$.
+\end{exe}
+
+\begin{coro}[Propriété de linéarité]
+Soit $X : \Omega \longrightarrow \mathbb{R}^d$ un vecteur gaussien. On note $\mu = \mathbb{E}(X)$ et $\Sigma = \text{Var}(X)$. On a pour toute matrice $A$ possédant $d$ colonnes et pour tout vecteur $b \in \mathbb{R}^d$ : $AX+b \rightsquigarrow \mathcal{N}(A \mu +b, A \Sigma A^T)$.
+\end{coro}
+
+\begin{rappel}[Conséquences de l'indépendance]
+$X$ et $Y$ sont indépendantes $\Longrightarrow \text{Cov}(X,Y) = \text{Corr}(X,Y) = 0$.
+\end{rappel}
+
+\begin{coro}[Propriété pour l'indépendance]
+Soit $X : \Omega \longrightarrow \mathbb{R}^d$ un vecteur gaussien. Pour tout $(i,j) \in \{1, ..., d \}^2$ tel que $i \neq j$, $X_i$ et $X_j$ sont indépendantes si et seulement si $\text{cov}(X_i,X_j)=0$.
+\end{coro}
+
+\subsection*{Rappels sur la régression linéaire}
+
+\begin{theo}[Méthodes des moindres carrés]
+L'estimateur des moindres carrés ordinaires, noté $\widehat{\beta}$, c'est-à-dire la solution de arg$\min \limits_{\beta=(\beta_0, \beta_1)^T} \displaystyle \sum_{i=1}^n (y_i - \beta_0 - \beta_1 x_i)^2$ vérifie : $\widehat{\beta}= (X^T X)^{-1}X^T Y$.
+\end{theo}
+
+\subsection*{Rappels d'optimisation}
+
+\begin{defin}[Problème d'optimisation sous contraintes]
+Un problème d'optimisation sous contraintes est la donnée d'un espace $\mathbb{R}^n$, d'une fonction $f : \mathbb{R}^n \longrightarrow \mathbb{R}$ (l'objectif), de fonctions $g_i (i \in [\![1;C]\!]) : \mathbb{R}^n \longrightarrow \mathbb{R}$ (les $C$ contraintes). \\
+On cherche $\inf \limits_{x \in \mathbb{R}^n , \forall i, g_i(x) \leq 0} f(x)$.
+\end{defin}
+
+\begin{defin}[Lagrangien]
+On appelle lagrangien du problème la fonction :
+\begin{center}
+$\begin{array}{llrll}
+L & : &  \mathbb{R}^n \times (\mathbb{R}_+)^{C}&  \longrightarrow & \mathbb{R} \\
+& & (x,\alpha) & \longmapsto & f(x) + \displaystyle \sum \limits_{i=1}^C \alpha_i g_i(x)
+\end{array}$
+\end{center}
+\end{defin}
+
+\begin{defin}[Fonction duale]
+On appelle fonction duale $F(\alpha)=\inf \limits_{x \in \mathbb{R}^n} L(x,\alpha)$.
+\end{defin}
+
+\begin{prop}[Concavité de la fonction duale]
+$F : \alpha \in (\mathbb{R}_+)^C \longmapsto F(\alpha) \in \mathbb{R}$ est une fonction concave.
+\end{prop}
+
+\begin{defin}[Problème dual]
+On appelle problème dual associé $\sup \limits_{\alpha, \forall i, \alpha_i \geq 0} F(\alpha)$
+\end{defin}
+
+\begin{lemme}[Inégalité entre les sup et les inf]
+\begin{center}
+$\sup \limits_{\alpha} \inf \limits_{x} L(x,\alpha) \leq \inf \limits_{x} \sup \limits_{\alpha} L(x,\alpha)$
+\end{center}
+\end{lemme}
+
+\begin{prop}[Lien entre problème primal et problème dual]
+$d^{\star} = \sup \limits_{\alpha, \forall i, \alpha_i \geq 0} F(\alpha) \leq \inf \limits_{x, g_i(x) \leq 0} f(x) = p^{\star}$ \\
+$\bullet$ si $p^{\star} > d^{\star}$, on dit qu'il y a saut de dualité. \\
+$\bullet$ si  $p^{\star} = d^{\star}$, résoudre le problème dual revient à résoudre le problème primal, on parle de dualité forte.
+\end{prop}
+
+\begin{defin}[Condition de qualification de Slater]
+$\exists x_0 \in \mathbb{R}^n, \forall i (g_i(x_0)<0) $ ou $ (g_i(x_0)=0 $ et $g_i$ affine $)$.
+\end{defin}
+
+\begin{theo}[Point selle et solutions]
+Soit $(\mathcal{P})$ un problème d'optimisation sous contraintes et $L$ le lagrangien associé. \\
+Si $(x^{\star}, \alpha^{\star})$ est un point selle de $L$, c'est-à-dire $\forall (x,\alpha) \in \mathbb{R}^n \times (\mathbb{R}_+)^C, L(x^{\star},\alpha) \leq L(x,\alpha) \leq L(x,\alpha^{\star})$. \\
+Alors $x^{\star}$ est une solution de $(\mathcal{P})$ et $\alpha^{\star}$ est une solution de $(\mathcal{D})$.
+\end{theo}
+
+\begin{theo}[Existence d'un point selle]
+Supposons que $f$ soit convexe et $\forall i g_i$ convexe. Supposons aussi la condition de qualification de Slater soit vérifiée. \\
+Alors si $x^{\star}$ est une solution de $(\mathcal{P}), \exists \alpha^{\star}$ tel que $(x^{\star}, \alpha^{\star})$ soit un point selle du lagrangien.
+\end{theo}
+
+\begin{theo}[Théorème de Karush-Kuhn-Tucker]
+Supposons que $f$ et $\forall i g_i$ soient convexes et différentiables, et que la condition de Slater soit vérifiée. Alors $x^{\star}$ est solution de $(\mathcal{P})$ si et seulement si : \\
+$\begin{array}{lll}
+\exists \alpha^{\star} \succeq 0 \text{ tel que : } & 1) &\bigtriangledown_x L(x^{\star}, \alpha^{\star}) \triangleq \bigtriangledown_x f(x^{\star}) + \displaystyle \sum \alpha_i^{\star}\bigtriangledown_x g_i(x^{\star})=0 \\
+& 2) & \bigtriangledown_{\alpha} L(x^{\star}, \alpha^{\star}) \triangleq (g_i(x^{\star})_{i \in [\![1;C]\!]} \preceq 0 \\
+& 3) & \displaystyle \sum \limits_{i=1}^C \alpha_i^{\star}g_i(x^{\star}) =0
+\end{array}$
+\end{theo}
+
+\subsection*{Machine à vecteurs de support}
+
+\begin{expli}[Problème]
+On considère les données $(x_i,y_i) \in \mathcal{X}^n \times \{-1, 1\}^n$ et le classifieur linéaire $h : x \longmapsto \text{ signe}(<w,x>+b)$. \\
+On note $H_{w,b}$ l'hyperplan affine $\{x_i | <w,x>+b =0\}$.
+\end{expli}
+
+\begin{prop}[Distance entre un point et un hyperplan]
+La distance d'un point $x$ à $H_{w,b}$ par $\inf \limits_{h \in H_{w,b}} \parallel x-h \parallel_2$ vaut :
+\begin{center}
+$d(x_i,H_{w,b}=\dfrac{|<w,x>+b|}{\parallel w \parallel}$.
+\end{center}
+\end{prop}
+
+\begin{prop}[Marge]
+On définit la marge par marge $\triangleq \min \limits_i d(x_i, H_{w,b})$.
+\end{prop}
+
+\begin{defin}[Paramétrisation standard]
+On appelle paramétrisation standard (toujours dans le cas linéairement séparable) une paramétrisation $(w,b)$ telle que $\min \limits_i y_i.(<w,x>+b)=1$. \\
+Une telle paramétrisation existe dans le cas linéairement séparable.
+\end{defin}
+
+\begin{prop}[Marge dans le cas de la paramétrisation standard]
+Pour $(w,b)$ standard, la marge vaut $\dfrac{1}{\parallel w \parallel}$.
+\end{prop}
+
+\begin{defin}[Machine à vecteurs de support]
+On appelle machine à vecteurs de support (SVM) un $(w,b)$ solution de $\min \limits_{\forall i, y_i (<w,x>+b) \geq 1} \dfrac{1}{2} \parallel w \parallel ^2$. Il s'agit du problème primal.
+ \end{defin}
+
+\begin{defin}[Vecteurs de support]
+Soit $(w^{\star},b^{\star})$ un SVM, on appelle vecteur de support les $x_i$ tels que $y_i(<w^{\star},x_i>+b^{\star})=1$.
+\end{defin}
+
+\begin{astu}[Lagrangien de $(\mathcal{P})$ et conditions du KKT]
+Le problème $(\mathcal{P})$ est un problème d'optimisation quadratique sous contraintes linéaires. \\
+Le lagrangien d'écrit $L(w,b,\alpha) = \dfrac{1}{2} \parallel w \parallel^2 + \displaystyle \sum \limits_{i=1}^n \alpha_i [1- y_i (<w,x_i>+b)]$. \\
+Les conditions du KKT s'écrivent : \\
+$\begin{array}{lll}
+1) &\bigtriangledown_w L =0 \Longrightarrow w = \displaystyle \sum \alpha_i y_i x_i \\
+1) & \bigtriangledown_b L =0 \Longrightarrow \sum \alpha_i y_i =0 \\
+2) & \bigtriangledown_{\alpha} L \preceq 0 \Longrightarrow y_i (w \dot x_i +b) \geq 1 \\
+3) & \displaystyle \sum \limits_{i=1}^C \alpha_i^{\star}[1- y_i (<w,x_i^{\star}>+b)] =0 \Longrightarrow \forall i, \alpha_i=0 $ ou $ y_i (<w,x_i> +b) = 1
+\end{array}$
+\end{astu}
+
+\begin{astu}[Lagrangien de $(\mathcal{D})$ et conditions du KKT]
+On définit $F(\alpha)=\inf \limits_{w,b} L(w,b,\alpha)$ avec $L(w,b,\alpha)=\dfrac{1}{2}\parallel w \parallel ^2 -\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j <x_i,x_j> + \sum \alpha_i$. \\
+Les conditions de KKT s'écrivent en particulier :  \\
+$\begin{array}{lll}
+1) &\bigtriangledown_w L =0 \Longrightarrow w = \displaystyle \sum \alpha_i y_i x_i \\
+1) & \bigtriangledown_b L =0 \Longrightarrow \sum \alpha_i y_i =0 \\
+\end{array}$
+D'où, $L(w,b,\alpha)= - \dfrac{1}{2}\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j <x_i,x_j> + \sum \alpha_i$.
+\end{astu}
+
+Ici, le problème n'est plus linéairement séparable (NLS).
+
+\begin{expli}[Cas non linéairement séparable]
+Dans ce cas, il existe $i$ tel que $y_i(<w,x_i>+b) <0$. \\
+On fait alors intervenir les variables (tous positifs) ressort afin de vérifier les conditions $y_i(<w,x_i>+b) \geq 1 - \xi_i$. \\
+Le problème $(\mathcal{P})$ est alors $\min \limits_{w,b,\xi} \dfrac{1}{2} \parallel w \parallel^2 + C \displaystyle \sum \xi_i^p$, avec $C \geq 0$ et $p \geq 0$.
+\end{expli}
+
+\begin{astu}[Lagrangien de $(\mathcal{P})$ et conditions du KKT dans le cas NLS]
+On prend $p=1$. Le lagrangien d'écrit $L(w,b,\xi, \alpha, \beta) =  \dfrac{1}{2} \parallel w \parallel^2 + C \displaystyle \sum \xi_i + \sum \alpha_i (1-y_i(<w,x_i>+b)-\xi_i) - \sum \beta_j \xi_j$. \\
+Les conditions du KKT s'écrivent en particulier: \\
+$\begin{array}{lll}
+1) &\bigtriangledown_w L =0 \Longrightarrow w = \displaystyle \sum \alpha_i y_i x_i \\
+1) & \bigtriangledown_b L =0 \Longrightarrow \sum \alpha_i y_i =0 \\
+1) & \bigtriangledown_{\xi} L =0 \Longrightarrow  \alpha_i + \beta_i =C \forall i \\
+\end{array}$
+\end{astu}
+
+\begin{astu}[Lagrangien de $(\mathcal{D})$ et conditions du KKT dans le cas NLS]
+On définit $F(\alpha)=\inf \limits_{w,b} L(w,b,\xi,\alpha,\beta)$ avec $L(w,b,\xi,\alpha,\beta)=\dfrac{1}{2}\parallel w \parallel ^2 -\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j <x_i,x_j> + \sum \alpha_i$. \\
+Les conditions de KKT s'écrivent en particulier :  \\
+$\begin{array}{lll}
+1) &\bigtriangledown_w L =0 \Longrightarrow w = \displaystyle \sum \alpha_i y_i x_i \\
+1) & \bigtriangledown_b L =0 \Longrightarrow \sum \alpha_i y_i =0 \\
+\end{array}$ \\
+D'où, $L(w,b,\alpha)= - \dfrac{1}{2}\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j <x_i,x_j> + \sum \alpha_i$. \\
+Et aussi, $F(\alpha, \beta) = \min \limits_{0 \leq \alpha_i \leq C, \sum \alpha_i y_i =0} \sum \alpha_i - \dfrac{1}{2}\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j <x_i,x_j> $.
+\end{astu}
+
+\subsection*{Noyaux}
+
+\begin{defin}[Noyau positif]
+On appelle noyau (positif) une fonction $K : \mathcal{X} \times \mathcal{X} \longrightarrow \mathbb{R}$ qui vérifie $\forall n \geq 1, \forall (x_1,...,x_n) \in \mathcal{X}^n, \forall (\lambda_1,...,\lambda_n) \in \mathbb{R}^n, \displaystyle \sum \limits_{1 \leq i,j \leq n} \lambda_i K(x_i,x_j)\lambda_j \geq 0$.
+\end{defin}
+
+\begin{defin}[Noyau symétrique positif]
+Un noyau symétrique positif est une fonction d'un noyau positif qui vérifie $K(x_i,x_j)=K(x_j,x_i)$ $\forall i,j$.
+\end{defin}
+
+\begin{prop}[Produit scalaire et noyau]
+On considère $\mathcal{X}$  un ensemble quelconque, $\mathcal{H}$ un espace de Hilbert muni du produit scalaire $<\dot, \dot>$ et $\phi$ une application de $\mathcal{X}$ dans $\mathcal{H}$, alors \\
+$\begin{array}{lrll}
+k : & \mathcal{X} \times \mathcal{X}& \longrightarrow & \mathbb{R} \\
+& (x,y) & \longmapsto &<\phi(x),\phi(y)> \\
+\end{array}$ est un noyau.
+\end{prop}
+
+\begin{rappel}[Produit scalaire]
+Soit $E$ un $\mathbb{R}$-espace vectoriel. Un produit scalaire sur
+$E$ est une application $\phi$ de $E\times E$ dans $\mathbb{R}$
+telle que :
+\begin{enumerate}
+\item $\phi$ est bilinéaire ;
+\item $\phi$ est symétrique : $\forall x,y\in E$, $\phi\left(x,y\right)=\phi\left(y,x\right)$;
+\item $\phi$ est positive ; $\forall x\in E$, $\phi\left(x,x\right)\geq0$;
+\item $\phi$ est définie : $\forall x\in E$, $\phi\left(x,x\right)=0\Leftrightarrow x=0$.
+\end{enumerate}
+\end{rappel}
+
+\begin{theo}[Théorème d'Aronszajn]
+Soit $K$ un noyau symétrique positif de $\mathcal{X} \times \mathcal{X} \longrightarrow \mathbb{R}$. Il existe un espace de Hilbert $\mathcal{H}$ et une application $\phi : \mathcal{X} \longrightarrow \mathcal{H}$ telle que $K(x,y)=<\phi(x),\phi(y)>$.
+\end{theo}
+
+\begin{expli}[SVM à noyau]
+On considère les données $(x_i,y_i) \in \mathcal{X}^n \times \{-1, 1\}^n$  et le noyau sur $\mathcal{X}$. \\ 
+On s'intéresse au problème $\min \limits_{0 \leq \alpha_i \leq C,  \sum \alpha_i y_i =0} \displaystyle \sum \alpha_i - \dfrac{1}{2}\sum \limits_{i,j} \alpha_i \alpha_j y_i y_j K(x_i,x_j) $. \\
+Le classifieur utilisé est alors $h : x \in \mathcal{X} \longmapsto \text{signe} \left( \displaystyle\sum \alpha_i y_i K(x_i,x)+b \right)$.
+\end{expli}
+
+\begin{exe}[Noyaux]
+\begin{enumerate}
+\item le noyau polynomial $K(x,x')=(c+<x,x'>)^d$ avec $x,x' \in \mathcal{X}, c \geq 0, d \geq 1$ ;
+\item le noyau gaussien $K(x,x')=\exp \left(- \dfrac{\parallel x - x' \parallel^2}{2 \sigma^2} \right)$ ; 
+\item le noyau sigmoïde $K(x,x') = \text{tanh}( a<x,x'>+b)$ avec $a,b >0$.
+\end{enumerate}
+\end{exe}
+
+\begin{prop}[Stabilités des noyaux]
+Les noyaux sont stables par somme, produit, produit tensoriel, limite ponctuelle et composition avec une fonction analytique de la forme $\displaystyle \sum a_n x^n$ avec $a_n \geq 0, \forall n$.
+\end{prop}
+
+\subsection*{Complexité de Rademacher et théorie de Vapnik-Chervonenkis}
+
+\begin{expli}[Détermination de $R(h^{\star})$]
+On souhaite déterminer un majorant de la différence entre $R(\widehat{h}_n)$ et $R(h^{\star})$. \\
+On sait déjà que $R(\widehat{h}_n)-R(h^{\star}) \leq 2 \sup \limits_{h \in \mathcal{H}}[R(h)-R_n(h)]$.
+\end{expli}
+
+\begin{theo}[Théorème de Hoeffding]
+Soient $X_1, ..., X_n$ $n$ variables réelles iid de loi $\mathbb{P}$ avec $\mathbb{P}(a \leq X \leq b)=1$ avec $a,b \in \mathbb{R}$. On a alors pour tout $\varepsilon >0$ : 
+\begin{enumerate}
+\item $\mathbb{P} \left( \displaystyle \sum \limits_{i=1}^n X_i - n \mathbb{E}(X_1) \geq \varepsilon \right) \leq \exp \left( - \dfrac{2 \varepsilon ^2}{n(b-a)^2} \right)$ ; 
+\item $\mathbb{P} \left( \displaystyle \sum \limits_{i=1}^n X_i - n \mathbb{E}(X_1) \leq - \varepsilon \right) \leq \exp \left( - \dfrac{2 \varepsilon ^2}{n(b-a)^2} \right)$.
+\end{enumerate}
+\end{theo}
+
+\begin{theo}[Extension du théorème de Hoeffding]
+Ces inégalités sont également valables pour $X_i$ indépendants mais pas identiquement distribuées, avec $\mathbb{P}(a_i \leq X_i \leq b_i)=1$ en donnant $\mathbb{P} \left( \displaystyle \sum X_i - \mathbb{E}(\sum X_i) \geq \varepsilon \right) \leq \exp \left( - \dfrac{2 \varepsilon ^2}{\sum(b_i-a_i)^2} \right)$.
+\end{theo}
+
+\begin{theo}[Théorème de Mc Diarmid]
+Soient $X_1, ..., X_n$ $n$ variables aléatoires réelles et soit $f : \mathbb{R}^n \longrightarrow \mathbb{R}$ telles que $\exists c_1,...,c_n, \forall x_1, ..., x_{i-1},x_i,x'_i,x_{i+1}, ..., x_n , \\
+ |f(x_1,..., x_i, ..., x_n)-f(x_1,..., x_{i-1},x'_i,x_{i+1}, ..., x_n) | \leq c_i, \forall i$, \\
+ alors pour tout $\varepsilon >0$ :
+ \begin{enumerate}
+\item $\mathbb{P}[f(X_1,...,X_n) - \mathbb{E}(f(X_1, ..., X_n)) \geq \varepsilon ] \leq \exp \left( - \dfrac{2 \varepsilon ^2}{\sum c_i^2} \right)$ ; 
+\item $\mathbb{P}[f(X_1,...,X_n) - \mathbb{E}(f(X_1, ..., X_n)) \leq - \varepsilon ] \leq \exp \left( - \dfrac{2 \varepsilon ^2}{\sum c_i^2} \right)$.
+\end{enumerate}
+\end{theo}
+
+\begin{defin}[Complexité de Rademacher empirique]
+Soit $\mathcal{G}$ une famille de fonctions de $\mathcal{Z} = \mathcal{X} \times \mathcal{Y}$ dans $[a,b]$ et $\mathcal{D}_n=(z_1,..., z_n)$ un échantillon. On appelle complexité de Rademacher empirique la quantité $\widehat{\mathcal{R}}(\mathcal{G}) = \mathbb{P}_{\sigma} \left[  \sup \limits_{g \in \mathcal{G}} \dfrac{1}{n} \displaystyle \sum \limits_{i=1}^n \sigma_i g(z_i) \right]$. \\
+Les $\sigma_i$ sont les variables de Rademacher : elles sont iid et vérifient $\mathbb{P}(\sigma_i = -1)=\mathbb{P}(\sigma_i=1) = \dfrac{1}{2} \forall i$.
+\end{defin}
+
+\begin{defin}[Complexité de Rademacher]
+On appelle complexité de Rademacher $\mathcal{R}(\mathcal{G}) = \mathbb{P}_{z_i} \left[ \widehat{\mathcal{R}}(\mathcal{G})\right]$.
+\end{defin}
+
+\begin{theo}[Majoration utile]
+Soit $\mathcal{G}$ une famille de fonctions de $\mathcal{Z} = \mathcal{X} \times \mathcal{Y}$ dans $[0,1]$. \\
+Alors, $\forall \delta >0$, avec une probabilité $1-\delta$, \\
+$\begin{array}{lrll}
+\forall g \in \mathcal{G} & \mathbb{E}_{\mathcal{Z}} \left(g(\mathcal{Z}) \right) & \leq & \dfrac{1}{n} \displaystyle \sum g(z_i)+2 \mathcal{R}(\mathcal{G})+\sqrt{\dfrac{\log(\frac{1}{\delta})}{2n}} \\
+& \mathbb{E}_{\mathcal{Z}} \left(g(\mathcal{Z}) \right) & \leq & \dfrac{1}{n} \displaystyle \sum g(z_i)+2 \mathcal{R}(\mathcal{G})+ 3 \sqrt{\dfrac{\log(\frac{2}{\delta})}{2n}} \\
+\end{array}$ 
+\end{theo}
+
+\begin{lemme}[Lien entre $\widehat{\mathcal{R}}_n(\mathcal{G})$ et $\widehat{\mathcal{R}}_n(\mathcal{H})$]
+Soit $\mathcal{H}$ une famille de fonctions à valeurs dans $\{-1;1\}$ et $\mathcal{G}$ la famille $g : (x,y) \in \mathcal{X} \times \mathcal{Y} \longmapsto 1_{h(x) \neq y}$. On a : 
+\begin{center}
+$\widehat{\mathcal{R}}(\mathcal{G}) = \dfrac{1}{2} \widehat{\mathcal{R}}(\mathcal{H})$.
+\end{center}
+\end{lemme}
+
+\begin{theo}[Majoration de l'écart entre les risques théorique et empirique]
+Si $\mathcal{H}$ est une famille de classifieurs binaires à valeurs dans $\{-1;1\}$, \\
+alors, $\forall \delta >0$, avec une probabilité $1-\delta$, 
+\begin{center}
+$R(h) - R_n(h) \leq \widehat{\mathcal{R}}(\mathcal{H}) + 3 \sqrt{\dfrac{\log(\frac{2}{\delta})}{2n}}$.
+\end{center}
+\end{theo}
+
+\begin{defin}[Fonction de croissance]
+On appelle fonction de croissance la fonction $\Pi_{\mathcal{H}} : m \in \mathbb{N} \longmapsto \max \limits_{\{x_1,...,x_m\} \subseteq \mathcal{X}} \text{ card } \left[ \{h(x_1),..., h(x_m) : h \in \mathcal{H}\} \right]$. \\
+On remarquera que $\forall m , \Pi_{\mathcal{H}}(m) \leq 2^m$.
+\end{defin}
+
+\begin{defin}[Dimension de VC]
+On appelle dimension de VC et noté $dimVC(\mathcal{H})$ le plus grand entier $n$ tel que $\Pi_{\mathcal{H}}(n)=2^n$.
+\end{defin}
+
+\begin{theo}[Lemme de Massart (2000)]
+Soit $A$ un sous-ensemble fini de $\mathbb{R}^n$ de cardinal $|A|$, $r = \max \limits_{a \in A} \parallel a \parallel_2$, et $\sigma$ un vecteur de $n$ variables aléatoires indépendantes de Rademacher. Nous avons alors : 
+\begin{center}
+$\mathbb{E}_{\sigma} \left[ \sup \limits_{a \in A} \displaystyle \sum_{i=1}^n \sigma_i a_i \right] \leq r \sqrt{2 \log |A|}$.
+\end{center}
+\end{theo}
+
+\begin{coro}[Majoration de la complexité de Rademacher]
+Soit $\mathcal{H}$ une famille de fonctions à valeurs dans $\{-1;1\}$, on a :
+\begin{center}
+$\mathcal{R}(\mathcal{H}) \leq \sqrt{\dfrac{2 \log \Pi_{\mathcal{X}}(n)}{n}}$.
+\end{center}
+\end{coro}
+
+\begin{coro}[Autre majoration de l'écart entre les risques ]
+$\forall \delta >0$, avec une probabilité $1-\delta$,
+\begin{center}
+$R(h) - R_n(h) \leq \sqrt{\dfrac{2 \log \Pi_{\mathcal{X}}(n)}{n}} + \sqrt{\dfrac{\log(\frac{1}{\delta})}{2n}}$
+\end{center}
+\end{coro}
+
+\begin{theo}[Dimension VC d'un classifieur affine]
+La dimension VC d'un classifieur affine de $\mathbb{R}^d$ est $d+1$
+\end{theo}
+
+\begin{theo}[Théorème de Sauer]
+\begin{center}
+$\Pi_{\mathcal{X}}(n) \leq \left( \dfrac{en}{dimVC(\mathcal{H})} \right)^{dimVC(\mathcal{H})}$
+\end{center}
+\end{theo}
+
+\begin{coro}[Majoration de l'écart entre les risques en fonction de $dimVC$]
+Soit $\mathcal{H}$ une famille de classifieurs de $dimVC=d$, alors $\forall \delta >0$, avec une probabilité $1-\delta$,
+\begin{center}
+$R(h) - R_n(h) \leq \sqrt{\dfrac{2d \log(\frac{en}{d})}{n}} + \sqrt{\dfrac{\log(\frac{1}{\delta})}{2n}}$
+\end{center}
+
+
+\end{coro}
+
+
+
+
+
+
+\end{document}
