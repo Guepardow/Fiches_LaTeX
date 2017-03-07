@@ -21,10 +21,13 @@
 \renewcommand{\headsep}{12pt}
 \renewcommand{\footskip}{20pt}
 
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{:}
+
 \fancyhead[R]{}
 \fancyhead[L]{}
 \fancyfoot[R]{Formulaire sur les inégalités}
-\fancyfoot[L]{{\tiny v : 17.02.23}}
+\fancyfoot[L]{ {\tiny v : \today}}
 
 \setlength\parindent{0em}
 
@@ -99,6 +102,8 @@ $f$ est concave sur $I$ si et seulement si :
 $$\forall x \in \mathbb{R}, x-1 \geqslant \ln(x)$$
 $$\forall x \in \mathbb{R}, e^x \geqslant x+1$$
 $$\forall x \in [0;\dfrac{\pi}{2}], \sin(x) \geqslant \dfrac{2}{\pi}x$$
+$$ \forall a,b \geq 0 , (a+b)^p \leq 2^{p-1} (a^p+b^p)$$
+
 \end{exe}
 
 \begin{ine}[Inégalité de Jensen]
@@ -216,10 +221,6 @@ Il existe une unique application $P_C$ de $E$ dans $C$, dite projection sur le c
 \item $\forall y \in C, <x-P_C(x), y-P_C(x) > \leq 0$
 \end{enumerate}
 \end{center}
-\end{ine}
-
-\begin{ine}[]
-$$(a+b)^p \leq 2^{p-1} (a^p+b^p)$$
 \end{ine}
 
 \end{document}
