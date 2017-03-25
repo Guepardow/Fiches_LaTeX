@@ -1,0 +1,363 @@
+\documentclass[landscape,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{fancybox}
+
+\addtolength{\voffset}{-2.9cm}
+\addtolength{\textheight}{5.8cm}
+\addtolength{\hoffset}{-1.5cm}
+\addtolength{\textwidth}{3.2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0.5pt} %épaisseur de la règle inf
+\renewcommand{\headrulewidth}{0.5pt} %épaisseur de la règle sup
+\renewcommand{\headsep}{12pt}
+\renewcommand{\footskip}{20pt}
+
+\usepackage[yyyymmdd]{datetime}
+\renewcommand{\dateseparator}{:}
+
+\fancyhead[R]{}
+\fancyhead[L]{}
+\fancyfoot[R]{Théorie de la mesure}
+\fancyfoot[L]{ {\tiny v : \today}}
+
+\setlength\parindent{0em}
+
+\usepackage{cadre}
+
+\usepackage{bbm} % indicatrice
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{theo}{Théorème}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{prop}{Proposition}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{coro}{Corollaire}{compteur_theo}
+
+\newboxedtheorem[boxcolor=red, background=white, titlebackground=white,
+titleboxcolor = red]{lemme}{Lemme}{compteur_theo}
+
+\newboxedtheorem[boxcolor= blue!20!black!30!green, background=white, titlebackground=white,
+titleboxcolor = blue!20!black!30!green]{defin}{Définition}{compteur_dfn}
+
+\newboxedtheorem[boxcolor= black, background=white, titlebackground=white,
+titleboxcolor = black]{att}{ATTENTION}{}
+
+\newboxedtheorem[boxcolor= blue, background=white, titlebackground=white,
+titleboxcolor = blue]{astu}{Astuce}{}
+
+\newboxedtheorem[boxcolor= black!30, background=white, titlebackground=white,
+titleboxcolor = black!30]{exe}{Exemple}{compteur_exe}
+
+\newboxedtheorem[boxcolor=brown, background=white, titlebackground=white,
+titleboxcolor = brown]{expli}{Explication}{compteur_expli}
+
+\newboxedtheorem[boxcolor=blue!50!red, background=white, titlebackground=white,
+titleboxcolor = blue!50!red]{rappel}{Rappel}{compteur_rap}
+
+\begin{document}
+\begin{center}
+{\Huge Théorie de la mesure}
+\end{center}
+
+\section{Espaces mesurables}
+
+\subsection{Tribu}
+
+\begin{rappel}[Ensemble dénombrable]
+Un ensemble $\mathrm{E}$ est dit dénombrable s'il existe une bijection de $\mathrm{E}$ dans $\mathbb{N}$.
+\end{rappel}
+
+\begin{rappel}[Produit cartésien fini d'ensembles dénombrables]
+Un produit cartésien fini d'ensembles dénombrables est dénombrable.
+\end{rappel}
+
+\begin{rappel}[Union dénombrable d'ensembles dénombrables]
+Une union dénombrable d'ensembles dénombrables est dénombrable.
+\end{rappel}
+
+\begin{exe}[Ensembles dénombrables]
+$\mathbb{N}, \mathbb{N}^2, \mathbb{Z}$ et $\mathbb{Q}$ sont dénombrables.
+Mais, $\mathbb{R}$ n'est pas dénombrable.
+\end{exe}
+
+\begin{defin}[Tribu]
+Soit $\mathcal{F}$ une famille de parties d'un ensemble $\Omega$. On dit que $\mathcal{F}$ est une tribu sur $\Omega$ ssi \\
+i) l'ensemble $\Omega \in \mathcal{F}$ \\
+ii) $A \in \mathcal{F} \Longrightarrow \overline{A} \in \mathcal{F}$ {\small [\textsc{stabilité par complémentation}]} \\
+iii) $\forall i \in \mathbb{N}, A_i \in \mathcal{F} \Longrightarrow \bigcap \limits_{i \in \mathbb{N}} A_i \in \mathcal{F}$ {\small [\textsc{Stabilité par intersection dénombrable}]}
+\end{defin}
+
+ \begin{defin}[Espace mesurable]
+ Le couple ($\Omega$, $\mathcal{F}$) est un espace mesurable.
+ \end{defin}
+
+\begin{exe}[Tribus]
+$\bullet$ La tribu la plus petite possible $ \{ \emptyset, \Omega \} $ est la tribu triviale. \\
+$\bullet$ La classe $\mathcal{P}(\Omega)$ de toutes les parties de $\Omega$ est clairement une tribu : c'est la "plus grande" tribu.
+\end{exe}
+
+\begin{astu}[Tribu]
+On peut définir une tribu par : soit $\mathcal{F}$ une famille de parties d'un ensemble $\Omega$ On dit que $\mathcal{F}$ est une tribu sur $\Omega$ ssi \\
+  i) $\emptyset \in \mathcal{F}$ \\
+ ii) $A \in \mathcal{F} \Longrightarrow \overline{A} \in \mathcal{F}$ {\small [\textsc {stabilité par complémentation}]} \\
+iii) $\forall i \in \mathbb{N}, A_i \in \mathcal{F} \Longrightarrow \bigcup \limits_{i \in \mathbb{N}} A_i \in \mathcal{F}$ {\small [\textsc{Stabilité par réunion dénombrable}]}
+\end{astu}
+
+\begin{lemme}[Stabilité par réunion dénombrable]
+Si $\mathcal{F}$ est une tribu et si $\forall i \in  \mathbb{N}$,$A_i \in \mathcal{F}$, alors $\bigcup \limits_{i \in \mathbb{N}} A_i \in \mathcal{F}$
+\end{lemme}
+
+\begin{att}
+Il n'y a pas d'écriture proprement explicite des éléments de la tribu à l'aide des symboles de réunion $\cup$, d'intersection $\cap$ ou du passage au complémentaire.
+\end{att}
+
+\begin{theo}[Existence d'une tribu engendrée par une famille]
+Pour tout $\mathcal{C}$, famille de parties de $\Omega$, il existe une tribu $\sigma(\mathcal{C})$ sur $\Omega$ vérifiant : \\
+i) $\mathcal{C} \subset \sigma(\mathcal{C})$ \\
+ii) Pour toute tribu $\mathcal{T}$, on a ($\mathcal{C} \subset \mathcal{T} \Longrightarrow \sigma(\mathcal{C}) \subset \mathcal{T})$
+\end{theo}
+
+\begin{defin}[Tribu engendrée par une famille]
+$\sigma(\mathcal{C})$ est donc la "plus petite" tribu contenant $\mathcal{C}$. Cette tribu sera notée $\sigma(\mathcal{C})$ et on l'appellera tribu engendrée par $\mathcal{C}$.
+\end{defin}
+
+\begin{exe}[Tribus engendrées]
+$\bullet$ La tribu engendrée par l'ensemble $A$ est $\{ \emptyset, A, \overline{A}, \Omega \}$. \\
+$\bullet$ La tribu engendrée par la partition $(A_i)_{i \in I}$ avec $I$ fini ou dénombrable est $\{ \bigcup \limits_{i \in J} A_i$, où $J \subset I \}$, avec la convention $\bigcup \limits_{i \in J} A_i = \emptyset$ si $J = \emptyset$.
+\end{exe}
+
+\begin{theo}[Égalité de deux tribus engendrées]
+Deux classes (ou deux familles de parties) $\mathcal{C}$ et $\mathcal{D}$ engendrent la même tribu ($\sigma(\mathcal{C}) =\sigma(\mathcal{D})$) si elles vérifient la double inclusion : $\mathcal{C} \subset \sigma(\mathcal{D})$ et $\mathcal{D} \subset \sigma(\mathcal{C})$.
+\end{theo}
+
+\begin{astu}[Tribu et famille]
+Soient $\mathcal{A}, \mathcal{B}, \mathcal{C}$ trois classes. On a les règles suivantes : \\
+$\bullet$ $\mathcal{A} \subset \mathcal{B} \Longrightarrow  \sigma(\mathcal{A}) \subset \sigma(\mathcal{B})$ \\
+$\bullet$  $\sigma(\sigma(\mathcal{C})) =  \sigma(\mathcal{C})$
+\end{astu}
+
+\begin{expli}[Intérêt des tribus]
+Les tribus qui nous intéresserons par la suite seront essentiellement construites comme des tribus engendrées. Une famille $\mathcal{C}$ de parties nous intéresse et de façon à pouvoir utiliser certains outils qui ne sont construits que sur les tribus (comme les mesures), nous les incluons dans une tribu. \\
+Le fait qu'il est impossible de donner une description explicite de tous les éléments d'une tribu engendrée n'est pas un inconvénient, ni du point de vue théorique ni du point de vue pratique (on pourra savoir si des éléments particuliers sont dans la tribu en les écrivant (ou non) comme intersection et réunion dénombrable d'éléments de la tribu).
+\end{expli}
+
+\begin{rappel}[Intersection et réunion d'ouverts]
+Une réunion quelconque d'ouverts est un ouvert. \\
+Une intersection finie d'ouverts est un ouvert.
+\end{rappel}
+
+\begin{rappel}[Intersection et réunion de fermés]
+Une réunion finie de fermés est un fermé. \\
+Une intersection quelconque de fermés est un fermé.
+\end{rappel}
+
+\begin{defin}[Tribu borélienne et boréliens]
+Une classe d'ensembles particulièrement importante est celle des ouverts de $\mathbb{R}^k$ ; ce n'est pas une tribu puisque le complémentaire d'un ouvert n'est pas un ouvert en général. \\
+La plus petite tribu contenant les ouverts est la tribu borélienne de $\mathbb{R}^k$. On la note $\mathcal{B}_k$. \\
+Un borélien est un élément de la tribu borélienne. 
+\end{defin}
+
+\begin{astu}[Tribu borélienne]
+La tribu des boréliens $\mathcal{B}(\mathbb{R})$ est aussi engendrée par les fermés, les intervalles du type $]a,b]$ ou encore les intervalles du type $]- \infty , b[$ $(a,b \in \mathbb{R})$.
+\end{astu}
+
+\begin{prop}[Boréliens]
+Les ouverts, les fermés, les intervalles finis ou infinis, (ou les pavés qui sont l'extension des intervalles en dimension supérieure à 1) sont des boréliens.
+\end{prop}
+
+\begin{defin}[Tribu produit]
+Soient ($\Omega$, $\mathcal{F}$) et ($\Omega '$, $\mathcal{F} '$) deux espaces mesurables. On appelle tribu produit de $\mathcal{F}$ et $\mathcal{F}'$ et on note $\mathcal{F} \otimes \mathcal{F}'$, la tribu sur $\Omega \times \Omega '$ engendrée par la famille des pavés mesurables $\{ A \times A' ; A \in \mathcal{F}, A' \in \mathcal{F}' \}$. \\
+L'espace mesurable $\{ \Omega \times \Omega ', \mathcal{F} \otimes \mathcal{F}' \}$ est appelé espace mesurable produit de ($\Omega, \mathcal{F}$) et ($\Omega ', \mathcal{F} '$).
+\end{defin}
+
+\section{Mesures}
+
+\subsection{Définition et exemples}
+
+\begin{defin}[Mesure]
+Soit ($\Omega, \mathcal{F}$) un espace mesurable. On dit que $\nu : \mathcal{F} \longrightarrow \mathbb{R} \cup \{\infty \}$ est une mesure positive ssi \\
+i) $0 \leqslant \nu(A) \leqslant \infty$ pour tout $A \in \mathcal{F}$ \\
+ii) si $A_i \in \mathcal{F}$ $\forall i \in \mathbb{N}$ et si les $A_i$ sont disjoints alors $\nu (\bigcup \limits_{i \in \mathbb{N}} A_i) = \sum \limits_{i \in \mathbb{N}} \nu(A_i)$ ($\sigma$-\textsc{additivité}) \\
+Si de plus, $\nu (\Omega) < \infty$ on dira que $\nu$ est une mesure finie. \\
+Et si $\nu(\Omega)=1$, on dira que $\nu$ est une mesure de probabilité.
+\end{defin}
+
+\begin{att}
+On souligne qu'une mesure positive est à valeurs dans $\mathbb{R}_+ \cup \{ \infty \}$.
+\end{att}
+
+\begin{defin}[Espace mesuré]
+On appelle espace mesuré le triplet ($\Omega, \mathcal{F}, \nu $).
+\end{defin}
+
+\begin{exe}[Mesure de comptage]
+$\nu(A)=
+\left\{
+\begin{array}{ll}
+\mbox{ nombre d'éléments de } A \mbox{ si } A \mbox{ est fini }\\
+\infty \mbox{ sinon } \\
+\end{array}
+\right.$ \\
+Alors $\nu$ est une mesure sur ($\Omega, \mathcal{F}$) appelé mesure de comptage.
+\end{exe}
+
+\begin{exe}[Mesure de Dirac]
+Si $x \in \Omega$, alors $\delta_x$ défini par $\delta_x(A)=1(x \in A)$ pour tout $A \in \mathcal{F}$ est une mesure sur  ($\Omega, \mathcal{F}$) appelé mesure de Dirac en  $x$.
+\end{exe}
+
+\begin{exe}[Peigne de Dirac]
+Si ($x_i$) $\in \Omega^{\mathbb{N}}$ alors la mesure $\sum \limits_{i=1}^{\infty} \delta_{x_i}$ est extrêmement utilisée en traitement du signal et sera appelée peigne de Dirac.
+\end{exe}
+
+\begin{exe}[Mesure de Lebesgue]
+On admet l'existence et l'unicité d'une mesure $\lambda$ sur ($\mathbb{R}, \mathcal{B}$) telle que $\lambda([a,b])=b-a$ pour tout intervalle fini $[a,b]$, $-\infty < a < b < + \infty$. Cette mesure sera appelée mesure de Lebesgue sur $\mathbb{R}$ ; elle correspond intuitivement à la notion de "longueur de l'ensemble".
+\end{exe}
+
+\begin{astu}
+La mesure de Lebesgue est extrêmement utilisée. Contrairement à la mesure de comptage, la mesure de Lebesgue ne charge pas les singletons. 
+\end{astu}
+
+\begin{att}[Pas de lien entre borné et mesure de Lebesgue nulle]
+Un ouvert de mesure de Lebesgue finie n'est pas toujours borné : \\
+$\bigcup \limits_{n \in \mathbb{N}^*} \left] n,n+\dfrac{1}{n^2} \right[ $ qui est de mesure $\dfrac{\pi^2}{6}-1$. 
+\end{att}
+
+\begin{att}[Pas de lien entre dénombrable et mesure de Lebesgue nulle]
+Un borélien de mesure de Lebesgue nulle n'est pas toujours dénombrable : \\
+l'ensemble triadrique de Cantor n'est pas dénombrable mais est de mesure de Lebesgue nulle.
+\end{att}
+
+\begin{att}[Pas de lien entre mesure de Lebesgue non nul et les ouverts]
+Un borélien de mesure de Lebesgue strictement positive ne contient pas toujours un ouvert non vide : \\
+l'ensemble $\mathbb{R} \setminus \mathbb{Q}$  est de mesure $+ \infty$ mais ne contient pas d'ouvert.
+\end{att}
+
+\begin{lemme}[Mesure de réunion]
+Pour tout $A, B \in \mathcal{F}$, $\nu (A \cup B) + \nu (A \cap B) = \nu (A) + \nu (B)$.
+\end{lemme}
+
+\subsection{Monotonie, sous-additivité et continuité}
+
+\begin{prop}[Propriétés d'une mesure]
+Soit ($\Omega, \mathcal{F}, \nu $) un espace mesuré. \\
+i) si $A \subset B$ alors $\nu(A) \leqslant \nu(B)$ \textsc{[monotonie]} \\
+ii) pour toute suite $A_1, A_2,$ ... , on a $\nu ( \cup_{i=1}^{\infty} A_i) \leqslant \sum \limits_{i=1}^{\infty} \nu (A_i)$ \textsc{[sous-additivité]} \\
+iii) pour toute suite emboîtée, $A_1 \subset A_2 \subset$ ..., on a \\
+ $\nu ( \cup_{i=1}^{\infty} A_i) = \lim \limits_{n \mapsto \infty} \nu( \cup_{i=1}^{n} A_i) = \lim \limits_{n \mapsto \infty} \nu (A_n)$ \textsc{[continuité]} \\
+iv) pour toute suite $A_1 \supset A_2 \supset$ ... avec $\nu (A_1) < \infty$, on a \\
+$\nu ( \cap_{i=1}^{\infty} A_i) = \lim \limits_{n \mapsto \infty} \nu ( \cap_{i=1}^{n} A_i) = \lim \limits_{n \mapsto \infty} \nu (A_n)$ \textsc{[continuité]}
+\end{prop}
+
+\begin{lemme}
+Par sous-additivité, si $\forall i \in \mathbb{N}, \nu (A_i) = 0$, alors $\nu (\cup_{i=1}^{\infty} A_i)=0$. \\
+Puis par complémentation, si $\nu$ est une mesure de probabilité et si $\forall i \in \mathbb{N}, \nu (B_i)=1$, alors $\nu (\cap_{i=1}^{\infty} B_i)=1$.
+\end{lemme}
+
+\begin{coro}[Mesure de Lebesgue d'un ensemble dénombrable]
+Si $A \in \mathcal{B}$ est un ensemble dénombrable, alors $\lambda (A) =0$.
+\end{coro}
+
+\begin{astu}[Mesure de Lebesgue de $\mathbb{Q}$]
+$\mathbb{Q}$ étant dénombrable, il est de mesure nulle pour la mesure de Lebesgue.
+\end{astu}
+
+\begin{defin}[$\nu$-négligeable et $\nu$-presque partout]
+i) $A$ est $\nu$-négligeable s'il existe un ensemble $N \in \mathcal{F}$ tel que $A \subset N$ et $\nu (N)=0$. \\
+ii) $A$ est vraie $\nu$-presque partout si le complémentaire de $A$ est négligeable.
+\end{defin}
+
+\begin{exe}[Propriété vraie presque partout]
+Pour $x \in \mathbb{R}$, la propriété "$x$ est un irrationnel" est une propriété vraie $\lambda$-presque partout en raison de l'astuce précédente.
+\end{exe}
+
+\subsection{Deux outils importants}
+
+\begin{expli}[Égalité de deux mesures et extension d'une mesure]
+L'égalité de deux mesures pourra être utilisée notamment lorsque l'on veut montrer l'\textit{unicité} d'une certaine mesure vérifiant telle ou telle propriété. \\
+L'extension d'une mesure pourra être utilisée pour montrer l'\textit{existence} d'une mesure vérifiant telle ou telle propriété.
+\end{expli}
+
+\begin{defin}[$\pi$-système]
+On appelle $\pi$-système une famille d'ensembles $\mathcal{C}$ stable par intersection finie : $\forall A, B \in \mathcal{C}, A \cap B \in \mathcal{C}$.
+\end{defin}
+
+\begin{theo}[Égalité de deux mesures]
+Soient deux mesures $\mu$ et $\nu$ définies sur ($\Omega, \mathcal{F}$) et soit $\mathcal{C} \subset \mathcal{F}$ un $\pi$-système. \\
+On suppose que pour tout $C \in \mathcal{C}$, $\mu (C) = \nu (C)$ et $\mu (\Omega) = \nu (\Omega) < \infty$. \\
+Alors $\mu (A) = \nu (A)$ pour tout $A \in \sigma(\mathcal{C})$.
+\end{theo}
+
+\begin{expli}
+En d'autres termes, deux mesures qui coïncident sur un $\pi$-système et sur $\Omega$ coïncident donc sur la tribu engendrée par le $\pi$-système.
+\end{expli}
+
+
+\begin{defin}[Algèbre]
+On appelle algèbre $\mathcal{E}_0$ sur $\Omega$ une famille de parties de $\Omega$ vérifiant les trois propriétés suivantes : \\
+i) $\emptyset \in \mathcal{E}_0$ \\
+ii) $F \in \mathcal{E}_0 \Longrightarrow \overline{F} \in \mathcal{E}_0$ \\
+iii) $F, G \in \mathcal{E}_0 \Longrightarrow F \cap G \in \mathcal{E}_0$
+\end{defin}
+
+\begin{expli}
+Une algèbre a donc presque toutes les propriétés d'une tribu sauf que la stabilité est par intersection finie.
+\end{expli}
+
+\begin{expli}
+Pour résumer, $\{ \mbox{tribus} \} \subset \{ \mbox{algèbres} \} \subset \{ \pi \mbox{-systèmes} \}$
+\end{expli}
+
+\begin{defin}[Fonction $\sigma$-additive]
+Une fonction d'ensembles $\nu$ définie sur $\mathcal{E}_0$ est dite $\sigma$-additive si et seulement si pour toute réunion dénombrable d'éléments $F_i \in \mathcal{E}_0$, disjointes deux à deux, et $\cup_{i \in \mathbb{N}} F_i \in \mathcal{E}_0$, on a $\nu (\cup_{i \in \mathbb{N}} F_i) = \sum \limits_{i=1}^{\infty} \nu (F_i)$.
+\end{defin}
+
+\begin{expli}
+Une mesure est donc une fonction d'ensemble \textit{positive} $\sigma$-additive sur une \textit{tribu}.
+\end{expli}
+
+\begin{theo}[Théorème d'extension de Carathéodory]
+Soit $\Omega$ un ensemble et $\mathcal{E}_0$ une algèbre sur $\Omega$. Soit $\nu_0$ une fonction d'ensemble $\sigma$-additive positive telle que $\nu_0 (\Omega) < \infty$. Alors il existe une unique mesure $\nu$ sur $\sigma(\mathcal{E}_0)$ telle que $\nu = \nu_0$ sur $\mathcal{E}_0$.
+\end{theo}
+
+\begin{expli}
+Bref, une fonction d'ensemble positive vérifiant la $\sigma$-additivité sur une algèbre peut s'étendre en une mesure sur la tribu engendrée par l'algèbre.
+\end{expli}
+
+\subsection{Mesure produit}
+
+\begin{att}
+Il existe beaucoup de mesures sur l'espace produit différentes des mesures produits ! Il s'agira seulement d'une mesure particulière sur l'espace produit.
+\end{att}
+
+\begin{prop}[Mesure produit]
+Soient ($\Omega, \mathcal{F}, \nu $) et ($\Omega ', \mathcal{F} ', \nu ' $) deux espaces mesurées. Il existe une unique mesure sur ($\Omega \times \Omega ', \mathcal{F} \otimes \mathcal{F}'$) notée $\nu \otimes \nu '$ telle que pour tout $A \in \mathcal{F}$ et $B \in \mathcal{F}'$, on a $\nu \otimes \nu ' ( A \times B) = \nu (A) \nu ' (B)$. \\
+La mesure $\nu \otimes \nu '$ est aussi appelée produit tensoriel des mesures $\nu$ et $\nu '$.
+\end{prop}
+
+\section{Points essentiels}
+
+\shadowbox{\begin{minipage}[t]{.99\columnwidth}
+a) Les deux notions importantes du chapitre sont les tribus et les mesures. \\ 
+b) Pour "construire" ou "étendre" des tribus, on peut utiliser deux outils : les tribus engendrées et les tribus produit. \\
+c) Les tribus ne sont pas en général explicitables mais on considérera la tribu engendrée par certains ensembles d'intérêt. \\
+d) Des exemples de mesures concernent aussi bien des mesures discrètes (mesure de Dirac) que des mesures "continues" (mesure de Lebesgue).   \\ 
+e) On a vue trois propriétés fondamentales des mesures : monotonie, sous-additivité et continuité. \\
+f) On a vu deux outils importants pour les mesures : comment vérifier que deux mesures sont égales en vérifiant leur coïncidence sur des $\pi$-systèmes, comment étendre des fonctions d'ensembles définies sur certaines classes de parties en une "vraie" mesure sur une certaine tribu.
+\end{minipage}}
+
+
+\end{document}
