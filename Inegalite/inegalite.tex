@@ -203,6 +203,13 @@ $\forall \alpha >0, \mathbb{P}(|X-\mu| \geq \alpha) \leq \dfrac{\sigma^2}{\alpha
 \end{center}
 \end{ine}
 
+\begin{ine}[Inégalité préliminaire de Hoeffding]
+\begin{center}
+Soit $Y$ une variable aléatoire réelle bornée et centrée Soient $a$ et $b$ deux nombres réels tels que $a<b$ et tels que $\mathbb{P}(a \leq Y \leq b) = 1$. \\
+Alors, $\forall s >0, \mathbb{E} \left[e^{sY} \right] \leq \exp \left( \dfrac{s^2(b-a)^2}{8}\right)$
+\end{center}
+\end{ine}
+
 \begin{ine}[Inégalité de Hoeffding]
 \begin{center}
 Soit une suite $(X_k)_{k \in [\![1;n]\!]}$ de variables aléatoires réelles indépendantes vérifiant, pour deux suites $(a_k)_{k \in [\![1;n]\!]}$, $(b_k)_{k \in [\![1;n]\!]}$ de nombres réels tels que : \\
@@ -220,6 +227,12 @@ Il existe une unique application $P_C$ de $E$ dans $C$, dite projection sur le c
 \item $\forall y \in C, \parallel x - P_C(x) \parallel \leq \parallel x - y \parallel$ \\
 \item $\forall y \in C, <x-P_C(x), y-P_C(x) > \leq 0$
 \end{enumerate}
+\end{center}
+\end{ine}
+
+\begin{ine}[Inégalité sur la vitesse de convergence lors du TCL]
+\begin{center}
+Il existe une constante $C$ telle que si $X_1, ..., X_n$ sont des variables aléatoires iid admettant des moments d'ordre de 1 à 3, d'espérance nulle et de variance $\sigma^2 >0$ et $\mathbb{E}[|X_1|^3] = \rho < \infty$, et si on note $Y_n = \dfrac{1}{n} \sum \limits_{i=1}^n X_i$ la moyenne d'échantillon de ces variables, $F_n$ la fonction de répartition de $\dfrac{Y_n\sqrt{n}}{\sigma}$ et $\Phi$ la fonction de répartition de la loi normale, alors $\forall x,\forall n, |F_n(x) - \Phi(x) | \leq \dfrac{C\rho}{\sigma^3 \sqrt{n}}$.
 \end{center}
 \end{ine}
 
