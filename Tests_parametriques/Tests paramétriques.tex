@@ -1,0 +1,311 @@
+\documentclass[landscape,twocolumn]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathrsfs}
+\usepackage{graphicx}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[francais]{babel}
+\usepackage{fancybox}
+
+\addtolength{\voffset}{-2.9cm}
+\addtolength{\textheight}{5.8cm}
+\addtolength{\hoffset}{-1.5cm}
+\addtolength{\textwidth}{3.2cm}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand{\footrulewidth}{0.5pt} %épaisseur de la règle inf
+\renewcommand{\headrulewidth}{0.5pt} %épaisseur de la règle sup
+\renewcommand{\headsep}{12pt}
+\renewcommand{\footskip}{20pt}
+
+\fancyhead[R]{}
+\fancyhead[L]{}
+\fancyfoot[R]{Tests paramétriques}
+\fancyfoot[L]{version : 15.10..02}
+
+\setlength\parindent{0em}
+
+\usepackage{cadre}
+
+\usepackage{bbm} % indicatrice
+
+\newboxedtheorem[boxcolor=black!50, background=white, titlebackground=white,
+titleboxcolor = black!50]{etape1}{Étape 1}{}
+
+\newboxedtheorem[boxcolor=black!50, background=white, titlebackground=white,
+titleboxcolor = black!50]{etape2}{Étape 2}{}
+
+\newboxedtheorem[boxcolor=black!50, background=white, titlebackground=white,
+titleboxcolor = black!50]{etape3}{Étape 3}{}
+
+\newboxedtheorem[boxcolor=black!50, background=white, titlebackground=white,
+titleboxcolor = black!50]{etape4}{Étape 4}{}
+
+\newboxedtheorem[boxcolor=black!50, background=white, titlebackground=white,
+titleboxcolor = black!50]{etape5}{Étape 5}{}
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
+
+\begin{document}
+\begin{center}
+{\Huge Tests paramétriques} 
+\end{center}
+
+Considérons une variable aléatoire $X$ pour laquelle on note $\mu=\mathbb{E}(X)$ et $\sigma^2=\text{Var}(X)$ les vraies valeurs des paramètres. Considérons alors un échantillon $(X_1, ..., X_n)$ de $n$ variables aléatoires iid de même loi que $X$ dont on connaît une réalisation $(x_1, ..., x_n)$. \\
+
+\begin{etape5}[À ne pas oublier]
+Conclusion et interprétation du test
+\end{etape5}
+
+\section{Comparaison de la moyenne théorique de $X$ à un standard $\mu_0$}
+
+\subsection{Cas où la variance est connue}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$Z = \sqrt{n} \dfrac{\overline{X}-\mu}{\sigma}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+$\bullet$ Si $X$ suit une loi normale, $\mathcal{L}(Z) = \mathcal{N}(0,1)$ \\
+$\bullet$ Si $X$ suit une autre loi avec $n > 30$, $\mathcal{L}(Z) = \mathcal{N}(0,1)$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+$\bullet$ Si $\mathcal{H}_0 : \mu = \mu_0$, la zone de rejet est définie par $ \vert Z \vert > z_{(1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \leq \mu_0$, la zone de rejet est définie par $Z > z_{(1 - \alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \geq \mu_0$, la zone de rejet est définie par $Z < - z_{(1 - \alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$z_0 = \sqrt{n} \dfrac{\overline{x}-\mu_0}{\sigma}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\subsection{Cas où la variance est inconnue}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$T = \sqrt{n} \dfrac{\overline{X}-\mu}{S_c} = \sqrt{n-1}\dfrac{\overline{X}-\mu}{S}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+$\bullet$ Si $X$ suit une loi normale, $\mathcal{L}(T) = \mathcal{T}_{n-1}$ \\
+$\bullet$ Si $X$ suit une autre loi avec $n > 30$, $\mathcal{L}(T) = \mathcal{N}(0,1)$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+Dans le cas où la statistique de test suit une loi $\mathcal{N}(0,1)$, les zones de rejets sont les mêmes que précédemment. \\
+Dans le cas de la statistique de Student, on a : \\
+$\bullet$ Si $\mathcal{H}_0 : \mu = \mu_0$, la zone de rejet est définie par $ \vert T \vert > t_{(n-1,1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \leq \mu_0$, la zone de rejet est définie par $T > t_{(n-1,1-\alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \geq \mu_0$, la zone de rejet est définie par $T < - t_{(n-1,1-\alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$t_0 = \sqrt{n} \dfrac{\overline{x}-\mu_0}{s_c} = \sqrt{n-1}\dfrac{\overline{x}-\mu_0}{s}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\section{Comparaison de la variance théorique de $X$ à un standard $\sigma_0^2$}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$K = \dfrac{(n-1)S^2}{\sigma^2}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+Si $X$ suit une loi normale, $\mathcal{L}(K) = \chi_{n-1}^2$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+$\bullet$ Si $\mathcal{H}_0 : \sigma^2 = \sigma_0^2$, la zone de rejet est définie par $K> k_{(n-1,1-\frac{\alpha}{2})}$ ou $K < k_{(n-1,\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \sigma^2 \leq \sigma_0^2$, la zone de rejet est définie par $K > k_{(n-1,1-\alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \sigma^2 \geq \sigma_0^2$, la zone de rejet est définie par $K < k_{(n-1,\alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$k_0 = \dfrac{(n-1)s^2}{\sigma_0^2}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\section{Comparaison d'une proportion théorique à un standard $p_0$}
+
+C'est un cas particulier de la sous-section 1.1 lorsque les conditions d'approximation de la loi binomiale par la loi normale sont vérifiées ($n \geq 30, np > 5$ et $n(1-p) >5$). \\
+Si on note $\hat{P}=\overline{X}$ l'estimateur empirique du paramètre $p$, on a : 
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$Z = \sqrt{n}\dfrac{\hat{P}-p}{\sqrt{p(1-p)}}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+\begin{center}
+$\mathcal{L}(Z) = \mathcal{N}(0,1)$
+\end{center}
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+$\bullet$ Si $\mathcal{H}_0 : \mu = \mu_0$, la zone de rejet est définie par $ \vert Z \vert > z_{(1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \leq \mu_0$, la zone de rejet est définie par $Z > z_{(1 - \alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu \geq \mu_0$, la zone de rejet est définie par $Z < - z_{(1 - \alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$z_0 = \sqrt{n}\dfrac{\hat{p}-p_0}{\sqrt{p_0(1-p_0)}}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\section{Comparaison des moyennes théoriques de deux variables aléatoires}
+
+Considérons mes variables aléatoires $X_1$ et $X_2$ avec $\mu_1 = \mathbb{E}(X_1)$, et $\mu_2=\mathbb{E}(X_2)$, $\sigma_1^2 = \text{Var}(X_1)$ et $\sigma_2^2=\text{Var}(X_2)$. \\
+Considérons alors deux échantillons $X_{1,1}, ..., X_{1,n}$ et $X_{2,1}, ..., X_{2, m}$ respectivement de $n$ et $m$ variables aléatoires iid de même loi que $X_1$ et $X_2$ respectivement. On note $x_{1,1}, ..., x_{1,n}$ et $x_{2,1}, ..., x_{2, m}$ les réalisations respectives de ces échantillons.
+
+\subsection{Comparaison des moyennes théoriques de deux variables aléatoires : échantillons appariés}
+
+Les échantillons $X_{1,1}, ..., X_{1,n}$ et $X_{2,1}, ..., X_{2, n}$ (de même taille) sont dits appariés si pour tout $i \in [\![1,n]\!]$, $X_{1,i}$ et $X_{2,i}$ caractérisent une même mesure effectuée à deux instants différents sur un même individu. \\
+Dans ce cas, on travaillera sur l'échantillon des variables aléatoires indépendantes $D_1 = X_{1,1}-X_{2,1}, ..., D_n = X_{1,n}-X_{2,n}$ pour lequel les tests de comparaison de $\mu_1$ et $\mu_2$ se traduisent par des tests de comparaison de la moyenne $\mu_1 - \mu_2$ avec la valeur nominale 0.
+
+\subsection{Comparaison des moyennes théoriques de deux variables aléatoires : échantillons non appariés}
+
+\subsubsection{Cas où les variances sont connues}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$Z = \dfrac{\overline{X_1}-\overline{X_2}}{\sqrt{\dfrac{\sigma_1^2}{n} + \dfrac{\sigma_2^2}{m}}}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+$\bullet$ Si $X_1$ et $X_2$ suivent une loi normale, $\mathcal{L}(Z) = \mathcal{N}(\mu_1 - \mu_2,1)$ \\
+$\bullet$ Si $X_1$ et $X_2$ suivent une autre loi avec $n > 30$ et $m > 30$, $\mathcal{L}(Z) = \mathcal{N}(\mu_1 - \mu_2,1)$ \\
+Sous l'hypothèse nulle $\mu_1 = \mu_2$ et donc $\mathcal{L}(Z_0) = \mathcal{N}(0,1)$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 = \mu_2$, la zone de rejet est définie par $ \vert Z \vert > z_{(1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \leq \mu_2$, la zone de rejet est définie par $Z > z_{(1 - \alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \geq \mu_2$, la zone de rejet est définie par $Z < - z_{(1 - \alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$z_0 = \dfrac{\overline{x_1}-\overline{x_2}}{\sqrt{\dfrac{\sigma_1^2}{n} + \dfrac{\sigma_2^2}{m}}}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\subsubsection{Cas où les variances sont inconnues mais égales}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$T= \dfrac{\overline{X_1} - \overline{X_2}}{S_p \sqrt{\frac{1}{n} + \frac{1}{m}}}$ avec $S_p^2 = \dfrac{(n-1)S_{c1}^2 + (m-1)S_{c2}^2}{n+m-2}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+$\bullet$ Si $X_1$ et $X_2$ suivent une loi normale, alors sous l'hypothèse nulle $\mathcal{L}(T_0) = \mathcal{T}_{n+m-2}$ \\
+$\bullet$ Si $X_1$ et $X_2$ suivent une autre loi avec $n > 30$ et $m > 30$, $\mathcal{L}(T_0) = \mathcal{N}(0,1)$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+Dans le cas où la statistique de test suit une loi $\mathcal{N}(0,1)$, les zones de rejets sont les mêmes que précédemment. \\
+Dans le cas de la statistique de Student, on a : \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 = \mu_2$, la zone de rejet est définie par $ \vert T_0 \vert > t_{(n+m-2,1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \leq \mu_2$, la zone de rejet est définie par $T_0 > t_{(n+m-2,1-\alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \geq \mu_2$, la zone de rejet est définie par $T_0 < - t_{(n+m-2,1-\alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$t_0= \dfrac{\overline{x_1} - \overline{x_2}}{s_p \sqrt{\frac{1}{n} + \frac{1}{m}}}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\subsubsection{Cas où les variances sont inconnues et différentes}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$T= \dfrac{\overline{X_1} - \overline{X_2}}{\sqrt{\frac{S_{c1}^2}{n}+ \frac{S_{c2}^2}{m}}}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+$\bullet$ Si $X_1$ et $X_2$ suivent une loi normale, alors sous l'hypothèse nulle $\mathcal{L}(T_0) = \mathcal{T}_{\nu}$ avec  $a=\dfrac{S_{c1}^2}{n}$, $b= \dfrac{S_{c2}^2}{m}$ et $\nu = \dfrac{(a+b)^2}{\frac{a^2}{n-1}+\frac{b^2}{m-1}}$\\
+$\bullet$ Si $X_1$ et $X_2$ suivent une autre loi avec $n > 30$ et $m > 30$, $\mathcal{L}(T_0) = \mathcal{N}(0,1)$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+Dans le cas où la statistique de test suit une loi $\mathcal{N}(0,1)$, les zones de rejets sont les mêmes que précédemment. \\
+Dans le cas de la statistique de Student, on a : \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 = \mu_2$, la zone de rejet est définie par $ \vert T_0 \vert > t_{(\nu,1-\frac{\alpha}{2})}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \leq \mu_2$, la zone de rejet est définie par $T_0 > t_{(\nu,1-\alpha)}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \mu_1 \geq \mu_2$, la zone de rejet est définie par $T_0 < - t_{(\nu,1-\alpha)}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$t_0= \dfrac{\overline{x_1} - \overline{x_2}}{\sqrt{\frac{s_{c1}^2}{n}+ \frac{s_{c2}^2}{m}}}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\section{Comparaison de deux variances théoriques}
+
+\begin{etape1}[Statistique de test]
+\begin{center}
+$F = \dfrac{S_{c1}^2}{S_{c2}^2}$
+\end{center}
+\end{etape1}
+
+\begin{etape2}[Loi de la statistique de test]
+Si $X_1$ et $X_2$ suivent une loi normale, $\mathcal{L}(F) = \mathcal{F}_{(n-1,m-1)}^2$
+\end{etape2}
+
+\begin{etape3}[Détermination de la zone de rejet au seuil $\alpha$]
+$\bullet$ Si $\mathcal{H}_0 : \sigma_1^2 = \sigma_2^2$, la zone de rejet est définie par $ F > f_{(n-1,m-1),1-\frac{\alpha}{2}}$ou $ F < f_{(n-1,m-1),\frac{\alpha}{2}}$\\
+$\bullet$ Si $\mathcal{H}_0 : \sigma_1^2 \leq \sigma_2^2$, la zone de rejet est définie par $ F > f_{(n-1,m-1),1-\alpha}$ \\
+$\bullet$ Si $\mathcal{H}_0 : \sigma_1^2 \geq \sigma_2^2$, la zone de rejet est définie par $F < f_{(n-1,m-1),\alpha}$
+\end{etape3}
+
+\begin{etape4}[Sous $\mathcal{H}_0$, réalisation de la statistique pour l'échantillon]
+\begin{center}
+$f_0= \dfrac{s_1^2}{s_2^2}$
+\end{center}
+\end{etape4}
+
+%\begin{etape5}[Conclusion et interprétation du test]
+%\end{etape5}
+
+\end{document}
